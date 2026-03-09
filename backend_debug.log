@@ -1,0 +1,171 @@
+INFO:     Started server process [18440]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:62844 - "GET /api/properties/1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52472 - "GET /api/properties/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58794 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59547 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53753 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2019 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53753 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2018 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53753 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2017 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53753 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2016 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53753 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2015 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53753 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2014 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53753 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2013 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53753 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2012 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53753 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2011 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53753 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2010 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53753 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2011 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60779 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50444 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61533 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60779 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60779 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61533 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61435 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55228 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59065 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61435 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61435 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59065 - "GET /api/regions/appreciation?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55228 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61435 - "GET /api/regions/appreciation?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61435 - "GET /api/properties/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58988 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59330 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55427 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52227 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55427 - "GET /api/regions/appreciation?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52227 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59330 - "GET /api/regions/appreciation?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55427 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59330 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52227 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55427 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52227 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52227 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55427 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62792 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2015 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61553 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64199 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50245 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54103 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62227 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54103 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49583 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51610 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2024 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2023 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2022 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2020 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2019 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2018 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2017 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2016 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2015 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2014 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2013 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49850 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60396 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59207 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52167 - "GET /api/properties/43 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59678 - "GET /api/properties/123 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65078 - "GET /api/regions/appreciation?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55508 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65078 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54365 - "GET /api/regions/appreciation?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65078 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54365 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65078 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55508 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55508 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65078 - "GET /api/regions/appreciation?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54365 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55508 - "GET /api/regions/appreciation?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54365 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55508 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65078 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54365 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54365 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65078 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60035 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62107 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63098 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60035 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60632 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57693 - "GET /api/regions/appreciation?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60632 - "GET /api/regions/appreciation?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59790 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52579 - "GET /api/properties/32 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51981 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52451 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51981 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61526 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49675 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51008 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62790 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54983 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63320 - "GET /api/analysis/multivariate?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51907 - "GET /api/analysis/multivariate?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51907 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63320 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53431 - "GET /api/analysis/multivariate?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62086 - "GET /api/analysis/multivariate?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53431 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62086 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63030 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53431 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53431 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63030 - "GET /api/regions/appreciation?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62086 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53431 - "GET /api/regions/appreciation?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62086 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53431 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63030 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62086 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62086 - "GET /api/properties/9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62086 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54881 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51406 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54385 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2026 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2027 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2028 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2029 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2028 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2027 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2026 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2024 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2023 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2022 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/geospatial/map/regions3d?ano_inicio=2010&ano_fim=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/geospatial/map/regions3d?ano_inicio=2011&ano_fim=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/geospatial/map/regions3d?ano_inicio=2012&ano_fim=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58516 - "GET /api/analysis/multivariate?ano_inicio=2012&ano_fim=2021 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51001 - "GET /api/analysis/multivariate?ano_inicio=2012&ano_fim=2021 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51001 - "GET /api/analysis/correlation-matrix?ano_inicio=2012&ano_fim=2021 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58516 - "GET /api/analysis/correlation-matrix?ano_inicio=2012&ano_fim=2021 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49537 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50887 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63489 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49537 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49537 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63489 - "GET /api/regions/appreciation?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49537 - "GET /api/regions/appreciation?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50887 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50887 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49537 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63489 - "GET /api/regions/ranking?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50887 - "GET /api/market/price_distribution?ano_inicio=2010&ano_fim=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58839 - "GET /api/geospatial/map/regions3d?ano_inicio=2012&ano_fim=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55879 - "GET /api/geospatial/map/regions3d?ano_inicio=2012&ano_fim=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65319 - "GET /api/analysis/multivariate?ano_inicio=2012&ano_fim=2021 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57108 - "GET /api/analysis/multivariate?ano_inicio=2012&ano_fim=2021 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58358 - "GET /api/analysis/correlation-matrix?ano_inicio=2012&ano_fim=2021 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58466 - "GET /api/analysis/correlation-matrix?ano_inicio=2012&ano_fim=2021 HTTP/1.1" 404 Not Found

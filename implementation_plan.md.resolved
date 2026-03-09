@@ -1,0 +1,81 @@
+# HabitaData DF — Camada Analítica
+
+Implementação da camada Python de análise de dados sobre o banco SQLite existente ([habitadata_df.db](file:///c:/Users/danie/Desktop/5star/Codes/PI/habitadata_df.db)).  
+O código será organizado no pacote `analytics/` dentro de `c:\Users\danie\Desktop\5star\Codes\PI\`.
+
+---
+
+## Proposed Changes
+
+### Dependências
+
+#### [MODIFY] venv (pip install)
+Instalar:
+- `pandas` — DataFrames e operações tabulares  
+- `numpy` — cálculos numéricos (CAGR, correlações)  
+- `scipy` — correlação de Pearson/Spearman  
+
+---
+
+### Pacote `analytics/`
+
+#### [NEW] `analytics/__init__.py`
+Re-exporta todas as funções públicas dos três sub-módulos, expondo uma API limpa:  
+`from analytics import evolucao_imovel, ranking_regioes, impacto_metragem, ...`
+
+---
+
+#### [NEW] `analytics/db.py` — Conexão & helpers
+- `get_connection(db_path) → sqlite3.Connection` — abre conexão com `row_factory = sqlite3.Row` e `foreign_keys = ON`  
+- `query(sql, params, db_path) → pd.DataFrame` — executa qualquer SQL e retorna DataFrame  
+- Constante `DB_PATH` apontando para `habitadata_df.db` resolvida a partir do pacote  
+
+---
+
+#### [NEW] `analytics/imoveis.py` — Análises por imóvel
+| Função | Retorno | Descrição |
+|---|---|---|
+| `evolucao_imovel(id_imovel)` | DataFrame | Série temporal completa: ano, valor_estimado, variação % YoY |
+| `valorizacao_percentual(id_imovel)` | float | % total entre ano_entrega e último ano com dados |
+| `cagr_imovel(id_imovel)` | float | Crescimento Anual Composto |
+| `top_valorizados(n, ano_inicio, ano_fim)` | DataFrame | N imóveis com maior CAGR no período |
+| `top_desvalorizados(n, ano_inicio, ano_fim)` | DataFrame | N imóveis com menor CAGR no período |
+| `distribuicao_valorizacao(ano_inicio, ano_fim)` | DataFrame | CAGR de todos os imóveis (para histogramas/box plots) |
+
+---
+
+#### [NEW] `analytics/mercado.py` — Análises de mercado e regiões
+| Função | Retorno | Descrição |
+|---|---|---|
+| `valorizacao_media_por_regiao(ano_inicio, ano_fim)` | DataFrame | CAGR médio por região |
+| `ranking_regioes(ano_inicio, ano_fim)` | DataFrame | Ranking de regiões por CAGR médio |
+| `preco_medio_por_regiao(ano)` | DataFrame | Valor médio dos imóveis por região em um ano |
+| `evolucao_mercado(id_regiao)` | DataFrame | Valor médio do mercado por ano (todos ou por região) |
+| `crescimento_anual_mercado(id_regiao)` | DataFrame | Variação % YoY do valor médio de mercado |
+
+---
+
+#### [NEW] `analytics/urbano.py` — Análises urbanas & correlações
+| Função | Retorno | Descrição |
+|---|---|---|
+| `impacto_metragem(ano_inicio, ano_fim)` | DataFrame | CAGR por faixa de metragem (bins: 45-55, 55-70, 70-80, 80-90 m²) |
+| `impacto_distancia_metro(ano)` | DataFrame | Valor médio × distância do metrô no ano informado |
+| `impacto_criminalidade(ano)` | DataFrame | CAGR médio × índice de criminalidade |
+| `impacto_infraestrutura(ano)` | DataFrame | Score composto de infra × CAGR médio por região |
+| `correlacao_custo_m2(ano_inicio, ano_fim)` | DataFrame | Correlação (Pearson + Spearman) entre custo m² regional e valor estimado médio por ano/região |
+
+---
+
+## Verification Plan
+
+### Automated Tests — Smoke-test script
+
+Criar `smoke_test.py` na raiz do projeto. Executa cada função pública e valida o retorno básico (é um DataFrame, tem colunas esperadas, não está vazio).  
+
+```bash
+# Ativar venv e rodar
+.\venv\Scripts\activate
+python smoke_test.py
+```
+
+Cada função será chamada com parâmetros representativos (ex.: `id_imovel=1`, `ano=2024`, `n=5`, `ano_inicio=2010`, `ano_fim=2025`) e o script imprime ✔/✘ por função.

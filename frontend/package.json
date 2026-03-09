@@ -1,0 +1,40 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@deck.gl/aggregation-layers": "^8.9.36",
+    "@deck.gl/layers": "^8.9.36",
+    "@deck.gl/react": "^8.9.36",
+    "axios": "^1.13.6",
+    "clsx": "^2.1.1",
+    "deck.gl": "^8.9.36",
+    "lucide-react": "^0.577.0",
+    "maplibre-gl": "^3.6.2",
+    "next": "16.1.6",
+    "plotly.js": "^3.4.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-map-gl": "^7.1.6",
+    "react-plotly.js": "^2.6.0",
+    "tailwind-merge": "^3.5.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/react-map-gl": "^6.1.8",
+    "@types/react-plotly.js": "^2.6.4",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

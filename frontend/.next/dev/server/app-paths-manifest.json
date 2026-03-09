@@ -1,0 +1,12 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/discovery/correlations/page": "app/discovery/correlations/page.js",
+  "/discovery/multivariate/page": "app/discovery/multivariate/page.js",
+  "/discovery/regional/page": "app/discovery/regional/page.js",
+  "/discovery/temporal/page": "app/discovery/temporal/page.js",
+  "/market/page": "app/market/page.js",
+  "/page": "app/page.js",
+  "/properties/page": "app/properties/page.js",
+  "/regions/page": "app/regions/page.js",
+  "/simulator/page": "app/simulator/page.js"
+}
