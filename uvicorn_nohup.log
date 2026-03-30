@@ -1,0 +1,456 @@
+INFO:     Will watch for changes in these directories: ['/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [20356] using StatReload
+INFO:     Started server process [20511]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:49405 - "GET /api/geospatial/map/regions3d?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49420 - "GET /api/geospatial/map/regions3d?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49420 - "GET /api/geospatial/map/regions3d?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49420 - "GET /api/analysis/regional-comparison?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49420 - "GET /api/analysis/regional-comparison?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49420 - "GET /api/analysis/growth-indices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49421 - "GET /api/analysis/growth-indices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49429 - "GET /api/analysis/correlation-matrix?ano=2021 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/uvicorn/protocols/http/h11_impl.py", line 410, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/applications.py", line 1160, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/cors.py", line 95, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/cors.py", line 153, in simple_response
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 130, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 116, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 670, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 326, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/backend/api/analysis.py", line 28, in get_correlation_matrix
+    df = an.get_correlation_matrix(ano - 5, ano)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'analytics' has no attribute 'get_correlation_matrix'
+INFO:     127.0.0.1:49430 - "GET /api/analysis/correlation-matrix?ano=2021 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/uvicorn/protocols/http/h11_impl.py", line 410, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/applications.py", line 1160, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/cors.py", line 95, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/cors.py", line 153, in simple_response
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 130, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 116, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 670, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 326, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/backend/api/analysis.py", line 28, in get_correlation_matrix
+    df = an.get_correlation_matrix(ano - 5, ano)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'analytics' has no attribute 'get_correlation_matrix'
+INFO:     127.0.0.1:49432 - "GET /api/market/price_distribution?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49431 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49433 - "GET /api/market/price_distribution?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49431 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49431 - "GET /api/regions/ranking?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49433 - "GET /api/regions/appreciation?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49431 - "GET /api/regions/appreciation?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49432 - "GET /api/regions/ranking?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49434 - "GET /api/regions/ranking?ano=2010 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49439 - "GET /api/market/price_distribution?ano=2010 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49434 - "GET /api/regions/ranking?ano=2010 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49440 - "GET /api/market/price_distribution?ano=2010 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49450 - "GET /api/geospatial/map/regions3d?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49450 - "GET /api/geospatial/map/regions3d?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49451 - "GET /api/analysis/regional-comparison?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49454 - "GET /api/analysis/regional-comparison?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49454 - "GET /api/geospatial/map/regions3d?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49451 - "GET /api/geospatial/map/regions3d?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49451 - "GET /api/analysis/regional-comparison?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49454 - "GET /api/analysis/regional-comparison?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49462 - "GET /api/analysis/regional-comparison?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49462 - "GET /api/geospatial/map/regions3d?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49462 - "GET /api/geospatial/map/regions3d?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49463 - "GET /api/geospatial/map/regions3d?ano=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49463 - "GET /api/analysis/regional-comparison?ano=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49465 - "GET /api/analysis/regional-comparison?ano=2025 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49478 - "GET /api/analysis/growth-indices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49479 - "GET /api/analysis/growth-indices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49484 - "GET /api/analysis/correlation-matrix?ano=2025 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/uvicorn/protocols/http/h11_impl.py", line 410, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/applications.py", line 1160, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/cors.py", line 95, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/cors.py", line 153, in simple_response
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 130, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 116, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 670, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 326, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/backend/api/analysis.py", line 28, in get_correlation_matrix
+    df = an.get_correlation_matrix(ano - 5, ano)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'analytics' has no attribute 'get_correlation_matrix'
+INFO:     127.0.0.1:49485 - "GET /api/analysis/correlation-matrix?ano=2025 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/uvicorn/protocols/http/h11_impl.py", line 410, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/applications.py", line 1160, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/cors.py", line 95, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/cors.py", line 153, in simple_response
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 130, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 116, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 670, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 326, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/backend/api/analysis.py", line 28, in get_correlation_matrix
+    df = an.get_correlation_matrix(ano - 5, ano)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'analytics' has no attribute 'get_correlation_matrix'
+INFO:     127.0.0.1:49499 - "GET /api/analysis/correlation-matrix?ano=2021 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/uvicorn/protocols/http/h11_impl.py", line 410, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/applications.py", line 1160, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/cors.py", line 87, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 130, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 116, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 670, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 326, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/backend/api/analysis.py", line 28, in get_correlation_matrix
+    df = an.get_correlation_matrix(ano - 5, ano)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'analytics' has no attribute 'get_correlation_matrix'
+WARNING:  StatReload detected changes in 'analytics/__init__.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [20511]
+INFO:     Started server process [21081]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:49505 - "HEAD /api/analysis/correlation-matrix?ano=2021 HTTP/1.1" 405 Method Not Allowed
+INFO:     127.0.0.1:49509 - "GET /api/analysis/correlation-matrix?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49518 - "GET /api/analysis/correlation-matrix?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49523 - "GET /api/analysis/growth-indices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49524 - "GET /api/analysis/growth-indices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49524 - "GET /api/analysis/regional-comparison?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49524 - "GET /api/analysis/regional-comparison?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49524 - "GET /api/geospatial/map/regions3d?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49524 - "GET /api/geospatial/map/regions3d?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49524 - "GET /api/regions/ranking?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49527 - "GET /api/regions/appreciation?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49527 - "GET /api/regions/appreciation?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49528 - "GET /api/regions/ranking?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49527 - "GET /api/market/price_distribution?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49528 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49524 - "GET /api/market/price_distribution?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49528 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49528 - "GET /api/analysis/correlation-matrix?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49528 - "GET /api/analysis/correlation-matrix?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49528 - "GET /api/analysis/growth-indices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49524 - "GET /api/analysis/growth-indices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49532 - "GET /api/market/price_distribution?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49531 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49533 - "GET /api/market/price_distribution?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49531 - "GET /api/market/evolution HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49531 - "GET /api/regions/ranking?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49533 - "GET /api/regions/appreciation?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49531 - "GET /api/regions/ranking?ano=2021 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49533 - "GET /api/regions/appreciation?ano=2021 HTTP/1.1" 200 OK

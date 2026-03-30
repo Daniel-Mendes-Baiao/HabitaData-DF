@@ -1,0 +1,57 @@
+
+> frontend@0.1.0 dev
+> next dev
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /Users/luizfilipe/Desktop/CEUB/5 semestre/Projeto Integrador/HabitaData-DF/frontend/package-lock.json
+
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.62.131.183:3000
+
+✓ Starting...
+✓ Ready in 621ms
+ GET / 200 in 631ms (compile: 476ms, render: 154ms)
+ GET /discovery/regional 200 in 126ms (compile: 115ms, render: 11ms)
+ GET /discovery/regional 200 in 8ms (compile: 1310µs, render: 7ms)
+ GET /discovery/temporal 200 in 46ms (compile: 37ms, render: 9ms)
+ GET / 200 in 44ms (compile: 6ms, render: 38ms)
+ GET /discovery/regional 200 in 10ms (compile: 2ms, render: 8ms)
+ GET /discovery/temporal 200 in 11ms (compile: 3ms, render: 7ms)
+ GET /discovery/correlations 200 in 34ms (compile: 25ms, render: 9ms)
+ GET /market 200 in 26ms (compile: 17ms, render: 9ms)
+ GET /regions 200 in 48ms (compile: 26ms, render: 21ms)
+ GET /properties 200 in 26ms (compile: 18ms, render: 9ms)
+ GET /properties 200 in 46ms (compile: 4ms, render: 42ms)
+ GET / 200 in 9ms (compile: 3ms, render: 6ms)
+ GET /discovery/regional 200 in 11ms (compile: 3ms, render: 8ms)
+ GET /discovery/temporal 200 in 9ms (compile: 3ms, render: 7ms)
+ GET /discovery/correlations 200 in 10ms (compile: 3ms, render: 7ms)
+ GET /market 200 in 10ms (compile: 2ms, render: 7ms)
+ GET /regions 200 in 9ms (compile: 3ms, render: 7ms)
+ GET /properties 200 in 8ms (compile: 1958µs, render: 6ms)
+ GET /simulator 200 in 31ms (compile: 21ms, render: 10ms)
+ GET / 200 in 10ms (compile: 3ms, render: 7ms)
+ GET /discovery/regional 200 in 13ms (compile: 4ms, render: 9ms)
+ GET / 200 in 7ms (compile: 1218µs, render: 6ms)
+ GET /discovery/regional 200 in 7ms (compile: 956µs, render: 6ms)
+ GET /discovery/regional 200 in 36ms (compile: 1037µs, render: 35ms)
+ GET / 200 in 16ms (compile: 4ms, render: 12ms)
+ GET /discovery/regional 200 in 7ms (compile: 941µs, render: 6ms)
+ GET /discovery/temporal 200 in 31ms (compile: 15ms, render: 15ms)
+ GET /discovery/correlations 200 in 18ms (compile: 6ms, render: 12ms)
+ GET /discovery/correlations 200 in 36ms (compile: 2ms, render: 34ms)
+ GET /discovery/temporal 200 in 14ms (compile: 4ms, render: 10ms)
+ GET /discovery/temporal 200 in 17ms (compile: 3ms, render: 14ms)
+ GET /discovery/regional 200 in 10ms (compile: 1556µs, render: 9ms)
+ GET / 200 in 15ms (compile: 4ms, render: 11ms)
+ GET /regions 200 in 24ms (compile: 6ms, render: 18ms)
+ GET /market 200 in 16ms (compile: 4ms, render: 12ms)
+ GET /discovery/correlations 200 in 10ms (compile: 2ms, render: 7ms)
+ GET /discovery/temporal 200 in 13ms (compile: 1844µs, render: 11ms)
+ GET /market 200 in 7ms (compile: 989µs, render: 6ms)
+ GET /regions 200 in 7ms (compile: 1047µs, render: 6ms)

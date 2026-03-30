@@ -47,6 +47,7 @@ from analytics.urbano import (
     get_multivariate_data,
     get_regional_comparison_data,
     get_temporal_growth_indices,
+    get_correlation_matrix,
 )
 
 __all__ = [
@@ -76,4 +77,5 @@ __all__ = [
     "get_multivariate_data",
     "get_regional_comparison_data",
     "get_temporal_growth_indices",
+    "get_correlation_matrix",
 ]
