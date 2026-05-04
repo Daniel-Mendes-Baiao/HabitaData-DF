@@ -8,3 +8,4 @@ node_modules/
 .vscode/
 .idea/*.log
 .next/
+.DS_Store
