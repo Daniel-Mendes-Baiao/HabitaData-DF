@@ -26,6 +26,7 @@ from analytics.imoveis import (
     top_desvalorizados,
     top_valorizados,
     valorizacao_percentual,
+    listar_imoveis,
 )
 
 # --- Análises de mercado e regiões -------------------------------------------
@@ -78,4 +79,5 @@ __all__ = [
     "get_regional_comparison_data",
     "get_temporal_growth_indices",
     "get_correlation_matrix",
+    "listar_imoveis",
 ]

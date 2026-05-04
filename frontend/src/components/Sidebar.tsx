@@ -2,17 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useAnalytics } from '@/context/AnalyticsContext';
 import {
     Map as MapIcon,
-    BarChart3,
     Compass,
     Search,
-    TrendingUp,
-    Layers,
     Activity,
     ChevronRight,
-    Zap
+    Zap,
+    BookOpen,
+    Target
 } from 'lucide-react';
 
 const ANALYSIS_VARS = [
@@ -26,15 +24,11 @@ const ANALYSIS_VARS = [
 
 export function Sidebar() {
     const pathname = usePathname();
-    const { state, setAnoInicio, setAnoFim, setVariableX, setVariableY } = useAnalytics();
 
     const navItems = [
-        { href: '/', label: 'Exploração Espacial', icon: MapIcon },
-        { href: '/discovery/regional', label: 'Benchmarking Regional', icon: Activity },
-        { href: '/discovery/temporal', label: 'Índices de Crescimento', icon: Zap },
-        { href: '/discovery/correlations', label: 'Matriz de Correlação', icon: BarChart3 },
-        { href: '/market', label: 'Dinâmica de Mercado', icon: TrendingUp },
-        { href: '/regions', label: 'Performance Regional', icon: BarChart3 },
+        { href: '/onboarding', label: 'Guia de Uso & Métricas', icon: BookOpen },
+        { href: '/', label: 'Dashboard Central', icon: Activity },
+        { href: '/analysis/regional', label: 'Análise por Região', icon: Target },
         { href: '/properties', label: 'Detalhamento de Ativos', icon: Search },
         { href: '/simulator', label: 'Simulador Financeiro', icon: Compass },
     ];

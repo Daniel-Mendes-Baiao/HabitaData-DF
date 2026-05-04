@@ -35,7 +35,7 @@ python -m venv .venv
 # Instale as dependências
 pip install -r requirements.txt
 
-# Inicialize o banco de dados (processa o dataset imoveis-df.csv)
+# Inicialize o banco de dados (processa o dataset dataset/imoveis-df.csv)
 python setup_db.py
 
 # Inicie o servidor em modo de desenvolvimento

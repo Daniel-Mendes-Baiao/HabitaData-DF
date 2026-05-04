@@ -4,8 +4,8 @@ from pathlib import Path
 
 def main():
     base_dir = Path(__file__).parent.parent
-    csv_path = base_dir / "imoveis-df.csv"
     dataset_dir = base_dir / "dataset"
+    csv_path = dataset_dir / "imoveis-df.csv"
     
     print(f"Lendo {csv_path}...")
     df = pd.read_csv(csv_path, sep=';', dtype=str)

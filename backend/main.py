@@ -7,7 +7,7 @@ Ponto de entrada da API FastAPI para a Plataforma HabitaData DF.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.api import geospatial, market, properties, regions, analysis
+from backend.api import geospatial, market, properties, regions, analysis, ai
 
 app = FastAPI(
     title="HabitaData DF API",
@@ -30,6 +30,7 @@ app.include_router(regions.router, prefix="/api/regions", tags=["Region Intellig
 app.include_router(properties.router, prefix="/api/properties", tags=["Property Explorer"])
 app.include_router(geospatial.router, prefix="/api/geospatial", tags=["GeoSpatial & Maps"])
 app.include_router(analysis.router, prefix="/api/analysis", tags=["Advanced Analysis"])
+app.include_router(ai.router, prefix="/api/ai", tags=["AI"])
 
 
 @app.get("/")

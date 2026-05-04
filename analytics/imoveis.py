@@ -245,3 +245,37 @@ def distribuicao_valorizacao(
              ano_entrega | cagr_pct | valor_inicio | valor_fim | n_anos
     """
     return _cagr_todos(ano_inicio, ano_fim).reset_index(drop=True)
+# ---------------------------------------------------------------------------
+# 7. Listagem de todos os imóveis
+# ---------------------------------------------------------------------------
+
+def listar_imoveis() -> pd.DataFrame:
+    """
+    Lista todos os imóveis com metadados básicos e o último valor estimado.
+
+    Colunas: id_imovel | nome_regiao | metragem | quartos | banheiros | 
+             ano_entrega | ultimo_valor | ultimo_ano
+    """
+    sql = """
+        SELECT i.id_imovel,
+               r.nome_regiao,
+               i.metragem,
+               i.quartos,
+               i.banheiros,
+               i.ano_entrega,
+               h.valor_estimado AS ultimo_valor,
+               h.ano AS ultimo_ano
+          FROM imoveis i
+          JOIN regioes r ON r.id_regiao = i.id_regiao
+          LEFT JOIN (
+              SELECT id_imovel, valor_estimado, ano
+                FROM historico_valor_imovel
+               WHERE (id_imovel, ano) IN (
+                   SELECT id_imovel, MAX(ano)
+                     FROM historico_valor_imovel
+                    GROUP BY id_imovel
+               )
+          ) h ON h.id_imovel = i.id_imovel
+         ORDER BY i.id_imovel
+    """
+    return query(sql)

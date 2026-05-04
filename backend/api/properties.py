@@ -12,6 +12,13 @@ from backend.services.analytics_adapter import df_to_dict, scalar_to_json
 router = APIRouter()
 
 
+@router.get("/")
+def list_properties():
+    """Retorna a lista de todos os imóveis com metadados básicos."""
+    df = an.listar_imoveis()
+    return {"data": df_to_dict(df)}
+
+
 @router.get("/{imovel_id}")
 def get_property_details(imovel_id: int):
     """Histórico de preço, valor estimado e YoY do imóvel."""

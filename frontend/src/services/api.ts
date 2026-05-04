@@ -38,6 +38,10 @@ export const regionsAPI = {
 };
 
 export const propertiesAPI = {
+    list: async () => {
+        const res = await api.get('/properties/');
+        return res.data;
+    },
     getDetails: async (imovel_id: number) => {
         const res = await api.get(`/properties/${imovel_id}`);
         return res.data;
@@ -81,5 +85,14 @@ export const analysisAPI = {
         return res.data;
     },
 };
+
+export const aiAPI = {
+    analyze: async (property_data: any, user_question?: string) => {
+        const res = await api.post('/ai/analyze', { property_data, user_question });
+        return res.data;
+    },
+};
+
+
 
 export default api;
