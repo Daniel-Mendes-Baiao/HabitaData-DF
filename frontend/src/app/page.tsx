@@ -1,9 +1,7 @@
 'use client';
 
-import { useAnalytics } from '@/context/AnalyticsContext';
 import { 
   TrendingUp, 
-  Map as MapIcon, 
   Search, 
   Zap, 
   Shield, 
@@ -15,13 +13,34 @@ import {
 import Link from 'next/link';
 
 export default function DashboardHome() {
-  const { state } = useAnalytics();
-
   const stats = [
-    { label: 'Valorização Média', value: '5.8%', icon: <TrendingUp className="text-emerald-500" />, trend: '+0.4%' },
-    { label: 'Preço Médio m²', value: 'R$ 8.420', icon: <Zap className="text-amber-500" />, trend: '+2.1%' },
-    { label: 'Índice de Segurança', value: '88/100', icon: <Shield className="text-blue-500" />, trend: 'Estável' },
-    { label: 'Volume de Dados', value: '45k+', icon: <Database className="text-purple-500" />, trend: 'Atualizado' },
+    { label: 'Valorização Média', value: '5.5%', icon: <TrendingUp className="text-emerald-500" />, trend: 'IVG-R' },
+    { label: 'Preço Médio m²', value: 'R$ 10.552', icon: <Zap className="text-amber-500" />, trend: '2024' },
+    { label: 'Índice de Segurança', value: '74/100', icon: <Shield className="text-blue-500" />, trend: 'SSP-DF' },
+    { label: 'Volume de Dados', value: '45.8k', icon: <Database className="text-purple-500" />, trend: 'Integrado' },
+  ];
+
+  const sources = [
+    {
+      name: 'Kaggle Imóveis DF',
+      detail: 'aluguel, área, quartos, tipo e bairro',
+      href: 'https://www.kaggle.com/datasets/matheusnbrega/preo-do-aluguel-de-imveis-no-distrito-federal',
+    },
+    {
+      name: 'Banco Central IVG-R',
+      detail: 'série histórica de valorização imobiliária',
+      href: 'https://dadosabertos.bcb.gov.br/dataset/21340-indice-de-valores-de-garantia-de-imoveis-residenciais-financiados-ivg-r',
+    },
+    {
+      name: 'SSP-DF Crimes CCP',
+      detail: 'criminalidade por Região Administrativa',
+      href: 'https://dados.df.gov.br/dataset/crimes-contra-o-patrimonio-ccp',
+    },
+    {
+      name: 'IPEDF, Geoportal, INEP, CNES e OSM',
+      detail: 'RAs, desenvolvimento, infraestrutura e serviços',
+      href: 'https://www.ipe.df.gov.br/pdad',
+    },
   ];
 
   return (
@@ -58,6 +77,29 @@ export default function DashboardHome() {
           </div>
         ))}
       </div>
+
+      <section className="space-y-5">
+        <div>
+          <h2 className="text-2xl font-black text-white">Fontes integradas</h2>
+          <p className="text-sm text-slate-500 mt-1">
+            Bases públicas usadas para substituir os indicadores simulados por dados rastreáveis.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {sources.map((source) => (
+            <a
+              key={source.name}
+              href={source.href}
+              target="_blank"
+              rel="noreferrer"
+              className="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl hover:border-emerald-500/60 transition-colors"
+            >
+              <p className="text-sm font-black text-white">{source.name}</p>
+              <p className="text-xs text-slate-500 mt-2 leading-relaxed">{source.detail}</p>
+            </a>
+          ))}
+        </div>
+      </section>
 
       {/* Main Actions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { regionsAPI, marketAPI, aiAPI } from '@/services/api';
+import type { ChatMessage, RegionSummary } from '@/types';
 import {
   Calculator,
   TrendingUp,
@@ -16,8 +17,22 @@ import {
   Activity,
 } from 'lucide-react';
 
+type SimulationResult = {
+  years: number;
+  regionCagr: number;
+  marketCagr: number;
+  projectedValue: number;
+  marketProjectedValue: number;
+  roi: number;
+  diffToMarket: number;
+  metadata: Record<string, string | number>;
+  total_appreciation_pct: number;
+  cagr_pct: number;
+  history: [];
+};
+
 export default function InvestmentSimulator() {
-  const [regions, setRegions] = useState<any[]>([]);
+  const [regions, setRegions] = useState<RegionSummary[]>([]);
   const [marketCagr, setMarketCagr] = useState<number>(0);
 
   // Form State
@@ -27,11 +42,11 @@ export default function InvestmentSimulator() {
   const [sellYear, setSellYear] = useState<number>(2025);
 
   // Result State
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<SimulationResult | null>(null);
 
   // AI State
   const [aiAnalysis, setAiAnalysis] = useState<string | null>(null);
-  const [aiChat, setAiChat] = useState<{ role: 'user' | 'ai'; text: string }[]>([]);
+  const [aiChat, setAiChat] = useState<ChatMessage[]>([]);
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [chatInput, setChatInput] = useState('');
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -45,7 +60,7 @@ export default function InvestmentSimulator() {
         ]);
         setRegions(regRes.data);
         const allCagrs = mktDist.data
-          .map((d: any) => d.cagr_pct)
+          .map((d: { cagr_pct?: number }) => d.cagr_pct ?? 0)
           .filter((v: number) => v > 0);
         const avg =
           allCagrs.reduce((a: number, b: number) => a + b, 0) / allCagrs.length;
@@ -69,7 +84,7 @@ export default function InvestmentSimulator() {
     if (years <= 0) return;
 
     const regionData = regions.find((r) => r.nome_regiao === selectedRegion);
-    const regionCagr = regionData ? regionData.cagr_medio_pct : 0;
+    const regionCagr = regionData?.cagr_medio_pct ?? 0;
 
     const regionMultiplier = Math.pow(1 + regionCagr / 100, years);
     const marketMultiplier = Math.pow(1 + marketCagr / 100, years);
@@ -108,8 +123,8 @@ export default function InvestmentSimulator() {
     try {
       const res = await aiAPI.analyze(result);
       setAiAnalysis(res.analysis);
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setAiAnalysis('### Análise indisponível\n\nNão consegui conectar ao serviço de análise agora. A simulação financeira continua válida com os dados calculados na tela.');
     } finally {
       setIsAiLoading(false);
     }
@@ -125,8 +140,14 @@ export default function InvestmentSimulator() {
     try {
       const res = await aiAPI.analyze(result, userMsg);
       setAiChat((prev) => [...prev, { role: 'ai', text: res.analysis }]);
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setAiChat((prev) => [
+        ...prev,
+        {
+          role: 'ai',
+          text: 'Não consegui conectar ao serviço de análise agora. Ainda assim, você pode usar ROI, CAGR regional e comparação com a média do DF para avaliar o cenário.',
+        },
+      ]);
     } finally {
       setIsAiLoading(false);
     }
@@ -367,7 +388,7 @@ export default function InvestmentSimulator() {
                       <div className="h-full flex flex-col items-center justify-center text-center opacity-40 space-y-3">
                         <Bot size={36} />
                         <p className="text-[10px] font-bold uppercase tracking-widest leading-relaxed">
-                          Ex: "Vale a pena frente ao CDI?"
+                          Ex: &quot;Vale a pena frente ao CDI?&quot;
                         </p>
                       </div>
                     )}

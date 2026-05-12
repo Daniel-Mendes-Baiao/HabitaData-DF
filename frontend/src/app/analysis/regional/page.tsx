@@ -1,40 +1,54 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import dynamic from 'next/dynamic';
+import type { ReactNode } from 'react';
 import { useAnalytics } from '@/context/AnalyticsContext';
 import { analysisAPI } from '@/services/api';
+import type { RegionSummary, TemporalRegionPoint } from '@/types';
 import { 
     Loader2, 
     TrendingUp, 
-    Calendar, 
-    Activity, 
     Target, 
     ArrowUpRight, 
     ArrowDownRight, 
-    Info, 
     Building2,
     Shield,
     Train,
     School,
-    CheckCircle2,
     AlertCircle,
     BarChart3,
     ArrowRight
 } from 'lucide-react';
 
-const Plot = dynamic(() => import('react-plotly.js'), {
-    ssr: false,
-    loading: () => <div className="h-[400px] w-full bg-slate-900/50 animate-pulse rounded-3xl" />
-});
+type Insight = {
+    title: string;
+    desc: string;
+    icon: ReactNode;
+};
+
+type RegionCard = {
+    name: string;
+    isPrimary: boolean;
+    series: TemporalRegionPoint[];
+    currentPriceM2: number;
+    growth: number;
+    sample: number;
+    security: number;
+    metro?: number;
+};
 
 export default function RegionalAnalysis() {
     const { state, setAnoSelecionado } = useAnalytics();
     const [loading, setLoading] = useState(true);
-    const [benchmarkingData, setBenchmarkingData] = useState<any[]>([]);
-    const [temporalData, setTemporalData] = useState<any[]>([]);
+    const [benchmarkingData, setBenchmarkingData] = useState<RegionSummary[]>([]);
+    const [temporalData, setTemporalData] = useState<TemporalRegionPoint[]>([]);
     const [selectedRegion, setSelectedRegion] = useState<string>('');
     const [compareRegions, setCompareRegions] = useState<string[]>([]);
+
+    const handlePrimaryRegionChange = (region: string) => {
+        setSelectedRegion(region);
+        setCompareRegions(prev => prev.filter(item => item !== region));
+    };
 
     useEffect(() => {
         async function loadData() {
@@ -45,8 +59,8 @@ export default function RegionalAnalysis() {
                     analysisAPI.getGrowthIndices()
                 ]);
 
-                const bData = benchRes.data || [];
-                const tData = tempRes.data || [];
+                const bData: RegionSummary[] = benchRes.data || [];
+                const tData: TemporalRegionPoint[] = tempRes.data || [];
 
                 setBenchmarkingData(bData);
                 setTemporalData(tData);
@@ -62,67 +76,86 @@ export default function RegionalAnalysis() {
             }
         }
         loadData();
-    }, [state.anoSelecionado]);
+    }, [state.anoSelecionado, selectedRegion]);
 
     const primaryData = useMemo(() => benchmarkingData.find(d => d.nome_regiao === selectedRegion), [benchmarkingData, selectedRegion]);
 
-    const chartData = useMemo(() => {
-        const allSelected = [selectedRegion, ...compareRegions];
+    const normalizedCompareRegions = useMemo(
+        () => Array.from(new Set(compareRegions)).filter(region => region && region !== selectedRegion),
+        [compareRegions, selectedRegion]
+    );
+
+    const selectedRegionCards = useMemo(() => {
+        const allSelected = [selectedRegion, ...normalizedCompareRegions].filter(Boolean);
         return allSelected.map(reg => {
-            const regTemp = temporalData.filter(d => d.nome_regiao === reg);
+            const regTemp = temporalData.filter(d => d.nome_regiao === reg && d.ano >= 2015 && d.preco_m2_raw);
+            const first = regTemp[0];
+            const last = regTemp[regTemp.length - 1];
+            const firstPrice = first?.preco_m2_raw ?? 0;
+            const lastPrice = last?.preco_m2_raw ?? 0;
+            const growth = firstPrice > 0 ? ((lastPrice / firstPrice) - 1) * 100 : 0;
+            const bench = benchmarkingData.find(d => d.nome_regiao === reg);
+
             return {
-                x: regTemp.map(d => d.ano),
-                y: regTemp.map(d => d.preco_medio_raw),
-                type: 'scatter',
-                mode: 'lines',
                 name: reg,
-                line: { width: reg === selectedRegion ? 4 : 2, shape: 'spline', color: reg === selectedRegion ? '#10b981' : undefined },
-                fill: reg === selectedRegion ? 'tozeroy' : 'none',
-                fillcolor: reg === selectedRegion ? 'rgba(16, 185, 129, 0.05)' : 'transparent',
+                isPrimary: reg === selectedRegion,
+                series: regTemp,
+                currentPriceM2: last?.preco_m2_raw || 0,
+                growth,
+                sample: last?.n_imoveis || bench?.n_ativos || 0,
+                security: bench?.score_seguranca || 0,
+                metro: bench?.distancia_metro_km,
             };
-        });
-    }, [temporalData, selectedRegion, compareRegions]);
+        }).filter(card => card.series.length > 0);
+    }, [benchmarkingData, temporalData, selectedRegion, normalizedCompareRegions]);
+
+    const comparisonOptions = useMemo(() => {
+        return benchmarkingData
+            .filter(region => region.nome_regiao !== selectedRegion)
+            .filter(region => !normalizedCompareRegions.includes(region.nome_regiao))
+            .slice(0, 8);
+    }, [benchmarkingData, selectedRegion, normalizedCompareRegions]);
 
     const insights = useMemo(() => {
         if (!primaryData || !temporalData.length) return [];
-        const regTemp = temporalData.filter(d => d.nome_regiao === selectedRegion);
+        const regTemp = temporalData.filter(d => d.nome_regiao === selectedRegion && d.ano >= 2015 && d.preco_m2_raw);
         const lastYear = regTemp[regTemp.length - 1];
         const firstYear = regTemp[0];
+
+        const firstPrice = firstYear?.preco_m2_raw ?? 0;
+        const lastPrice = lastYear?.preco_m2_raw ?? 0;
+        const totalGrowth = firstPrice > 0 ? ((lastPrice / firstPrice) - 1) * 100 : 0;
         
-        const totalGrowth = lastYear && firstYear ? ((lastYear.preco_medio_raw / firstYear.preco_medio_raw) - 1) * 100 : 0;
-        
-        const results = [];
+        const results: Insight[] = [];
         
         if (totalGrowth > 50) {
             results.push({
-                type: 'positive',
                 title: 'Crescimento Histórico Robusto',
-                desc: `A região ${selectedRegion} apresentou uma valorização bruta de ${totalGrowth.toFixed(1)}% desde ${firstYear?.ano || 2010}.`,
+                desc: `O preço médio por m² em ${selectedRegion} avançou ${totalGrowth.toFixed(1)}% desde ${firstYear?.ano || 2015}.`,
                 icon: <TrendingUp className="text-emerald-400" size={16} />
             });
         }
 
-        if (primaryData.distancia_metro_km < 2) {
+        const metroDistance = primaryData.distancia_metro_km ?? 999;
+
+        if (metroDistance < 2) {
             results.push({
-                type: 'positive',
                 title: 'Excelente Conectividade Urbana',
-                desc: `A proximidade ao metrô (${primaryData.distancia_metro_km.toFixed(1)}km) é um catalisador chave para a liquidez nesta área.`,
+                desc: `A proximidade ao metrô (${metroDistance.toFixed(1)}km) é um catalisador chave para a liquidez nesta área.`,
                 icon: <Train className="text-blue-400" size={16} />
             });
         } else {
             results.push({
-                type: 'neutral',
                 title: 'Dependência de Modal Rodoviário',
-                desc: `Com ${primaryData.distancia_metro_km.toFixed(1)}km até o metrô, o valor é mais influenciado por vias de acesso e infraestrutura local.`,
+                desc: `Com ${metroDistance.toFixed(1)}km até o metrô, o valor é mais influenciado por vias de acesso e infraestrutura local.`,
                 icon: <AlertCircle className="text-amber-400" size={16} />
             });
         }
 
-        if (primaryData.cagr_pct > 8) {
+        if ((primaryData.cagr_pct ?? 0) > 8) {
             results.push({
-                type: 'positive',
                 title: 'Performance Acima do Mercado',
-                desc: `O CAGR de ${primaryData.cagr_pct.toFixed(2)}% indica que esta região está em fase de maturação acelerada ou forte demanda.`,
+                desc: `O CAGR de ${(primaryData.cagr_pct ?? 0).toFixed(2)}% indica que esta região está em fase de maturação acelerada ou forte demanda.`,
                 icon: <ArrowUpRight className="text-emerald-400" size={16} />
             });
         }
@@ -159,7 +192,7 @@ export default function RegionalAnalysis() {
                         <label className="text-[10px] uppercase font-bold text-slate-500 ml-1">Região Principal</label>
                         <select 
                             value={selectedRegion}
-                            onChange={(e) => setSelectedRegion(e.target.value)}
+                            onChange={(e) => handlePrimaryRegionChange(e.target.value)}
                             className="w-56 bg-slate-950 border border-slate-800 text-white rounded-2xl px-4 py-2.5 text-sm font-bold outline-none focus:border-emerald-500/50 transition-all appearance-none cursor-pointer"
                         >
                             {benchmarkingData.map(d => <option key={d.nome_regiao} value={d.nome_regiao}>{d.nome_regiao}</option>)}
@@ -184,26 +217,26 @@ export default function RegionalAnalysis() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <QuickMetric 
                         label="Preço Médio / m²" 
-                        value={`R$ ${primaryData.valor_m2.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`}
+                        value={`R$ ${(primaryData.valor_m2 ?? 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`}
                         sub={`Ano ${state.anoSelecionado}`}
                         icon={<Building2 size={18} className="text-emerald-400" />}
                     />
                     <QuickMetric 
                         label="Valorização (CAGR)" 
-                        value={`${primaryData.cagr_pct.toFixed(2)}%`}
+                        value={`${(primaryData.cagr_pct ?? 0).toFixed(2)}%`}
                         sub="Histórico anualizado"
                         icon={<TrendingUp size={18} className="text-blue-400" />}
-                        trend={primaryData.cagr_pct > 0 ? 'up' : 'down'}
+                        trend={(primaryData.cagr_pct ?? 0) > 0 ? 'up' : 'down'}
                     />
                     <QuickMetric 
                         label="Segurança Local" 
-                        value={`${(primaryData.indice_criminalidade).toFixed(0)}%`}
+                        value={`${(primaryData.indice_criminalidade ?? 0).toFixed(0)}%`}
                         sub="Indice de Criminalidade"
                         icon={<Shield size={18} className="text-purple-400" />}
                     />
                     <QuickMetric 
                         label="Infraestrutura" 
-                        value={`${primaryData.escolas_1km.toFixed(0)} un`}
+                        value={`${(primaryData.escolas_1km ?? 0).toFixed(0)} un`}
                         sub="Escolas em 1km"
                         icon={<School size={18} className="text-amber-400" />}
                     />
@@ -211,35 +244,42 @@ export default function RegionalAnalysis() {
             )}
 
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
-                {/* Gráfico Temporal */}
+                {/* Mini gráficos por região */}
                 <div className="xl:col-span-8 bg-slate-900/40 border border-slate-800 p-8 rounded-[2.5rem] space-y-6">
-                    <div className="flex justify-between items-center">
-                        <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                            <Calendar className="text-emerald-400" size={20} /> Evolução Histórica de Preços
-                        </h3>
-                        <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500">
-                            <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                            REGIAO SELECIONADA
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <div>
+                            <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                                <TrendingUp className="text-emerald-400" size={20} /> Tendência por Região
+                            </h3>
+                            <p className="text-xs text-slate-500 mt-1">
+                                Cada card tem escala própria para mostrar o desenho da curva sem esmagar regiões menores.
+                            </p>
+                        </div>
+                        <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">
+                            2015-2024 · R$/m²
                         </div>
                     </div>
-                    
-                    <Plot
-                        data={chartData as any}
-                        layout={{
-                            paper_bgcolor: 'rgba(0,0,0,0)',
-                            plot_bgcolor: 'rgba(0,0,0,0)',
-                            xaxis: { gridcolor: '#1e293b', zeroline: false, tickfont: { color: '#64748b' } },
-                            yaxis: { gridcolor: '#1e293b', zeroline: false, tickfont: { color: '#64748b' } },
-                            margin: { t: 20, b: 40, l: 60, r: 20 },
-                            hovermode: 'x unified',
-                            showlegend: true,
-                            legend: { orientation: 'h', y: 1.1, font: { color: '#94a3b8', size: 11 } },
-                            template: { layout: { template: 'plotly_dark' } } as any,
-                            autosize: true,
-                        }}
-                        config={{ responsive: true, displayModeBar: false }}
-                        style={{ width: '100%', height: '400px' }}
-                    />
+
+                    {normalizedCompareRegions.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                            {normalizedCompareRegions.map(region => (
+                                <button
+                                    key={region}
+                                    type="button"
+                                    onClick={() => setCompareRegions(prev => prev.filter(item => item !== region))}
+                                    className="px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-[10px] font-bold capitalize hover:bg-blue-500/20 transition-colors"
+                                >
+                                    {region} ×
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {selectedRegionCards.map(card => (
+                            <RegionSparkCard key={card.name} card={card} />
+                        ))}
+                    </div>
                 </div>
 
                 {/* Painel de Insights e Comparação */}
@@ -262,28 +302,22 @@ export default function RegionalAnalysis() {
                         </div>
 
                         <div className="pt-4 border-t border-slate-800">
-                            <p className="text-[10px] uppercase font-bold text-slate-600 mb-4 tracking-widest">Benchmarking: Comparar com</p>
+                            <p className="text-[10px] uppercase font-bold text-slate-600 mb-4 tracking-widest">Adicionar comparação</p>
                             <div className="grid grid-cols-2 gap-2">
-                                {benchmarkingData.filter(d => d.nome_regiao !== selectedRegion).slice(0, 6).map(reg => (
+                                {comparisonOptions.map(reg => (
                                     <button 
                                         key={reg.nome_regiao}
-                                        onClick={() => {
-                                            if (compareRegions.includes(reg.nome_regiao)) {
-                                                setCompareRegions(compareRegions.filter(r => r !== reg.nome_regiao));
-                                            } else {
-                                                setCompareRegions([...compareRegions, reg.nome_regiao]);
-                                            }
-                                        }}
-                                        className={`px-3 py-2 rounded-xl text-[10px] font-bold transition-all border ${
-                                            compareRegions.includes(reg.nome_regiao)
-                                                ? 'bg-blue-500/10 border-blue-500/40 text-blue-400'
-                                                : 'bg-slate-950 border-slate-800 text-slate-500 hover:border-slate-700'
-                                        }`}
+                                        type="button"
+                                        onClick={() => setCompareRegions(prev => Array.from(new Set([...prev, reg.nome_regiao])).filter(item => item !== selectedRegion))}
+                                        className="px-3 py-2 rounded-xl text-[10px] font-bold transition-all border bg-slate-950 border-slate-800 text-slate-500 hover:border-blue-500/50 hover:text-blue-300"
                                     >
                                         {reg.nome_regiao}
                                     </button>
                                 ))}
                             </div>
+                            {comparisonOptions.length === 0 && (
+                                <p className="text-xs text-slate-600">Todas as opções disponíveis já estão no painel.</p>
+                            )}
                         </div>
                     </div>
 
@@ -300,7 +334,106 @@ export default function RegionalAnalysis() {
     );
 }
 
-function QuickMetric({ label, value, sub, icon, trend }: any) {
+function RegionSparkCard({ card }: { card: RegionCard }) {
+    const values = card.series.map((d) => Number(d.preco_m2_raw) || 0);
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const range = max - min || 1;
+    const width = 320;
+    const height = 92;
+    const points = values.map((value: number, index: number) => {
+        const x = values.length === 1 ? 0 : (index / (values.length - 1)) * width;
+        const y = height - ((value - min) / range) * (height - 14) - 7;
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
+
+    const firstYear = card.series[0]?.ano;
+    const lastYear = card.series[card.series.length - 1]?.ano;
+    const growthPositive = card.growth >= 0;
+
+    return (
+        <button
+            type="button"
+            className={`text-left bg-slate-950/70 border p-5 rounded-3xl transition-all hover:border-emerald-500/50 ${
+                card.isPrimary ? 'border-emerald-500/50 shadow-[0_0_0_1px_rgba(16,185,129,0.18)]' : 'border-slate-800'
+            }`}
+        >
+            <div className="flex items-start justify-between gap-3">
+                <div>
+                    <div className="flex items-center gap-2">
+                        <span className={`h-2 w-2 rounded-full ${card.isPrimary ? 'bg-emerald-400' : 'bg-blue-400'}`} />
+                        <h4 className="text-sm font-black text-white capitalize">{card.name}</h4>
+                    </div>
+                    <p className="text-[10px] text-slate-600 mt-1 font-mono">
+                        {firstYear}-{lastYear} · {Number(card.sample).toFixed(0)} imóveis
+                    </p>
+                </div>
+                <div className={`flex items-center gap-1 text-[11px] font-black ${growthPositive ? 'text-emerald-400' : 'text-red-400'}`}>
+                    {growthPositive ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+                    {card.growth.toFixed(1)}%
+                </div>
+            </div>
+
+            <div className="mt-4 h-24">
+                <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full overflow-visible">
+                    <line x1="0" y1={height - 7} x2={width} y2={height - 7} stroke="#1e293b" strokeWidth="1" />
+                    <polyline
+                        points={points}
+                        fill="none"
+                        stroke={card.isPrimary ? '#10b981' : '#60a5fa'}
+                        strokeWidth={card.isPrimary ? 4 : 3}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                    {values.map((value: number, index: number) => {
+                        const x = values.length === 1 ? 0 : (index / (values.length - 1)) * width;
+                        const y = height - ((value - min) / range) * (height - 14) - 7;
+                        return (
+                            <circle
+                                key={`${card.name}-${index}`}
+                                cx={x}
+                                cy={y}
+                                r={index === values.length - 1 ? 3.5 : 0}
+                                fill={card.isPrimary ? '#10b981' : '#60a5fa'}
+                            />
+                        );
+                    })}
+                </svg>
+            </div>
+
+            <div className="mt-4 grid grid-cols-3 gap-3">
+                <div>
+                    <p className="text-[9px] uppercase font-black text-slate-600 tracking-widest">Preço/m²</p>
+                    <p className="text-sm font-black text-white">
+                        R$ {card.currentPriceM2.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                    </p>
+                </div>
+                <div>
+                    <p className="text-[9px] uppercase font-black text-slate-600 tracking-widest">Segurança</p>
+                    <p className="text-sm font-black text-white">{card.security.toFixed(0)}/100</p>
+                </div>
+                <div>
+                    <p className="text-[9px] uppercase font-black text-slate-600 tracking-widest">Metrô</p>
+                    <p className="text-sm font-black text-white">{card.metro?.toFixed(1) ?? '-'} km</p>
+                </div>
+            </div>
+        </button>
+    );
+}
+
+function QuickMetric({
+    label,
+    value,
+    sub,
+    icon,
+    trend,
+}: {
+    label: string;
+    value: string;
+    sub: string;
+    icon: ReactNode;
+    trend?: 'up' | 'down';
+}) {
     return (
         <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-[2rem] space-y-4 hover:border-slate-700 transition-all">
             <div className="flex justify-between items-start">

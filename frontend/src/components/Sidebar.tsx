@@ -3,24 +3,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-    Map as MapIcon,
     Compass,
     Search,
     Activity,
     ChevronRight,
-    Zap,
     BookOpen,
     Target
 } from 'lucide-react';
-
-const ANALYSIS_VARS = [
-    { id: 'metragem', label: 'Metragem (m²)' },
-    { id: 'cagr_pct', label: 'Valorização (CAGR %)' },
-    { id: 'distancia_metro_km', label: 'Dist. Metrô (km)' },
-    { id: 'indice_criminalidade', label: 'Criminalidade' },
-    { id: 'escolas_1km', label: 'Infra (Escolas)' },
-    { id: 'valor_medio_periodo', label: 'Preço Médio' },
-];
 
 export function Sidebar() {
     const pathname = usePathname();

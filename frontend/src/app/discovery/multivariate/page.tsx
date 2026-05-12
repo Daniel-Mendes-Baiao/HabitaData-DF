@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
+import type { Data, Layout } from 'plotly.js';
 import { useAnalytics } from '@/context/AnalyticsContext';
 import { analysisAPI } from '@/services/api';
 import { Loader2, Info, TrendingUp, AlertCircle } from 'lucide-react';
@@ -11,9 +12,23 @@ const Plot = dynamic(() => import('react-plotly.js'), {
     loading: () => <div className="h-[600px] w-full bg-slate-900 animate-pulse rounded-xl" />
 });
 
+type MultivariateRow = Record<string, string | number | null | undefined> & {
+    nome_regiao: string;
+    id_imovel: number;
+};
+
+const toNumber = (value: string | number | null | undefined, fallback = 0) => {
+    if (typeof value === 'number') return value;
+    if (typeof value === 'string') {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? parsed : fallback;
+    }
+    return fallback;
+};
+
 export default function MultivariateDiscovery() {
     const { state } = useAnalytics();
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<MultivariateRow[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -22,7 +37,7 @@ export default function MultivariateDiscovery() {
             setLoading(true);
             setError(null);
             try {
-                const res = await analysisAPI.getMultivariate(state.anoInicio, state.anoFim);
+                const res = await analysisAPI.getMultivariate(state.anoSelecionado);
                 setData(res.data || []);
             } catch (err) {
                 console.error("Erro ao carregar dados multivariados", err);
@@ -32,23 +47,24 @@ export default function MultivariateDiscovery() {
             }
         }
         fetchData();
-    }, [state.anoInicio, state.anoFim]);
+    }, [state.anoSelecionado]);
 
     const chartData = useMemo(() => {
         if (!data.length) return [];
 
         const regions = Array.from(new Set(data.map(d => d.nome_regiao)));
 
-        return regions.map(region => {
+        return regions.map<Data>(region => {
             const regionData = data.filter(d => d.nome_regiao === region);
             return {
-                x: regionData.map(d => d[state.variableX]),
-                y: regionData.map(d => d[state.variableY]),
+                type: 'scatter',
+                x: regionData.map(d => toNumber(d[state.variableX])),
+                y: regionData.map(d => toNumber(d[state.variableY])),
                 mode: 'markers',
                 name: region,
                 text: regionData.map(d => `ID: ${d.id_imovel}<br>X: ${d[state.variableX]}<br>Y: ${d[state.variableY]}`),
                 marker: {
-                    size: regionData.map(d => (d[state.variableSize] || 1) / 100000),
+                    size: regionData.map(d => Math.max(toNumber(d[state.variableSize], 1) / 100000, 6)),
                     sizeref: 0.1,
                     sizemode: 'area',
                     opacity: 0.6,
@@ -57,6 +73,18 @@ export default function MultivariateDiscovery() {
             };
         });
     }, [data, state.variableX, state.variableY, state.variableSize]);
+
+    const chartLayout: Partial<Layout> = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        xaxis: { title: { text: state.variableX.toUpperCase() }, gridcolor: '#1e293b' },
+        yaxis: { title: { text: state.variableY.toUpperCase() }, gridcolor: '#1e293b' },
+        margin: { t: 40, b: 60, l: 60, r: 40 },
+        hovermode: 'closest',
+        showlegend: true,
+        legend: { x: 1, y: 1 },
+        autosize: true,
+    };
 
     if (loading) {
         return (
@@ -100,19 +128,8 @@ export default function MultivariateDiscovery() {
                         </div>
 
                         <Plot
-                            data={chartData as any}
-                            layout={{
-                                template: { layout: { template: 'plotly_dark' } } as any,
-                                paper_bgcolor: 'rgba(0,0,0,0)',
-                                plot_bgcolor: 'rgba(0,0,0,0)',
-                                xaxis: { title: { text: state.variableX.toUpperCase() }, gridcolor: '#1e293b' } as any,
-                                yaxis: { title: { text: state.variableY.toUpperCase() }, gridcolor: '#1e293b' } as any,
-                                margin: { t: 40, b: 60, l: 60, r: 40 },
-                                hovermode: 'closest',
-                                showlegend: true,
-                                legend: { x: 1, y: 1 },
-                                autosize: true,
-                            }}
+                            data={chartData}
+                            layout={chartLayout}
                             config={{ responsive: true, displayModeBar: false }}
                             className="w-full h-[600px]"
                         />

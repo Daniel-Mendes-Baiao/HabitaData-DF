@@ -1,4 +1,5 @@
 import axios from 'axios';
+import type { AIPropertyPayload } from '@/types';
 
 const api = axios.create({
     baseURL: 'http://127.0.0.1:8000/api',
@@ -87,7 +88,7 @@ export const analysisAPI = {
 };
 
 export const aiAPI = {
-    analyze: async (property_data: any, user_question?: string) => {
+    analyze: async (property_data: AIPropertyPayload, user_question?: string) => {
         const res = await api.post('/ai/analyze', { property_data, user_question });
         return res.data;
     },

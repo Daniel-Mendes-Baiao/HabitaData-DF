@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import ReactMarkdown from 'react-markdown';
 import { propertiesAPI, aiAPI } from '@/services/api';
+import type { ChatMessage, PropertyDetails, PropertyHistoryPoint, PropertyListItem } from '@/types';
 import { 
   Search, 
   Home, 
@@ -20,13 +21,12 @@ import {
   MessageSquare
 } from 'lucide-react';
 
-// @ts-ignore
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 
 export default function PropertyExplorer() {
-  const [properties, setProperties] = useState<any[]>([]);
+  const [properties, setProperties] = useState<PropertyListItem[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [detailData, setDetailData] = useState<any>(null);
+  const [detailData, setDetailData] = useState<PropertyDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadingDetail, setLoadingDetail] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -34,7 +34,7 @@ export default function PropertyExplorer() {
 
   // IA States
   const [aiAnalysis, setAiAnalysis] = useState<string | null>(null);
-  const [aiChat, setAiChat] = useState<{role: 'user' | 'ai', text: string}[]>([]);
+  const [aiChat, setAiChat] = useState<ChatMessage[]>([]);
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [chatInput, setChatInput] = useState('');
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -98,8 +98,8 @@ export default function PropertyExplorer() {
     try {
       const res = await aiAPI.analyze(detailData);
       setAiAnalysis(res.analysis);
-    } catch (err) {
-      console.error("Erro na análise IA", err);
+    } catch {
+      setAiAnalysis('### Análise indisponível\n\nNão consegui conectar ao serviço de análise agora. Os dados do imóvel continuam disponíveis na ficha e no histórico abaixo.');
     } finally {
       setIsAiLoading(false);
     }
@@ -117,8 +117,14 @@ export default function PropertyExplorer() {
     try {
       const res = await aiAPI.analyze(detailData, userMsg);
       setAiChat(prev => [...prev, {role: 'ai', text: res.analysis}]);
-    } catch (err) {
-      console.error("Erro no chat IA", err);
+    } catch {
+      setAiChat(prev => [
+        ...prev,
+        {
+          role: 'ai',
+          text: 'Não consegui conectar ao serviço de análise agora. Tente novamente em alguns instantes ou use os indicadores da ficha para comparar preço, CAGR e histórico.',
+        },
+      ]);
     } finally {
       setIsAiLoading(false);
     }
@@ -255,7 +261,7 @@ export default function PropertyExplorer() {
                       <div className="h-full flex flex-col items-center justify-center text-center p-8 opacity-40">
                         <Bot size={48} className="mb-4" />
                         <p className="text-xs font-bold uppercase tracking-widest leading-relaxed">
-                          Tire suas dúvidas sobre este imóvel.<br />Ex: "Vale a pena comprar para alugar?"
+                          Tire suas dúvidas sobre este imóvel.<br />Ex: &quot;Vale a pena comprar para alugar?&quot;
                         </p>
                       </div>
                     )}
@@ -312,8 +318,8 @@ export default function PropertyExplorer() {
                     <Plot
                       data={[
                         {
-                          x: detailData.history.map((h: any) => h.ano),
-                          y: detailData.history.map((h: any) => h.valor_estimado),
+                          x: detailData.history.map((h: PropertyHistoryPoint) => h.ano),
+                          y: detailData.history.map((h: PropertyHistoryPoint) => h.valor_estimado),
                           type: 'scatter',
                           mode: 'lines+markers',
                           line: { color: '#10b981', width: 4, shape: 'spline' },
@@ -366,17 +372,20 @@ export default function PropertyExplorer() {
                         </tr>
                       </thead>
                       <tbody>
-                        {detailData.history.slice(-5).reverse().map((h: any, i: number) => (
-                          <tr key={i} className="border-b border-slate-800/30 hover:bg-white/5 transition-colors">
-                            <td className="px-8 py-5 text-sm font-bold text-white">{h.ano}</td>
-                            <td className="px-8 py-5 text-sm font-medium text-slate-300">
-                              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(h.valor_estimado)}
-                            </td>
-                            <td className={`px-8 py-5 text-sm font-black text-right ${h.variacao_yoy_pct >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>
-                              {h.variacao_yoy_pct > 0 ? '+' : ''}{h.variacao_yoy_pct?.toFixed(2)}%
-                            </td>
-                          </tr>
-                        ))}
+                        {detailData.history.slice(-5).reverse().map((h: PropertyHistoryPoint, i: number) => {
+                          const yoy = h.variacao_yoy_pct ?? 0;
+                          return (
+                            <tr key={i} className="border-b border-slate-800/30 hover:bg-white/5 transition-colors">
+                              <td className="px-8 py-5 text-sm font-bold text-white">{h.ano}</td>
+                              <td className="px-8 py-5 text-sm font-medium text-slate-300">
+                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(h.valor_estimado)}
+                              </td>
+                              <td className={`px-8 py-5 text-sm font-black text-right ${yoy >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>
+                                {yoy > 0 ? '+' : ''}{yoy.toFixed(2)}%
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
