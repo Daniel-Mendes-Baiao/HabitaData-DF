@@ -11,9 +11,15 @@ OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 def get_property_agent():
     return Agent(
         model=OpenAIChat(
-            id="google/gemma-3-27b-it:free",
+            id="google/gemma-4-31b-it:free",
             api_key=OPENROUTER_API_KEY,
-            base_url="https://openrouter.ai/api/v1"
+            base_url="https://openrouter.ai/api/v1",
+            role_map={
+                "system": "system",
+                "user": "user",
+                "assistant": "assistant",
+                "tool": "tool",
+            }
         ),
         description="Você é o HabitaData AI, um especialista sênior em mercado imobiliário do Distrito Federal.",
         instructions=[
