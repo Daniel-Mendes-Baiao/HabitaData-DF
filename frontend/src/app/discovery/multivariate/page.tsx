@@ -22,7 +22,7 @@ export default function MultivariateDiscovery() {
             setLoading(true);
             setError(null);
             try {
-                const res = await analysisAPI.getMultivariate(state.anoInicio, state.anoFim);
+                const res = await analysisAPI.getMultivariate(state.anoSelecionado);
                 setData(res.data || []);
             } catch (err) {
                 console.error("Erro ao carregar dados multivariados", err);
@@ -32,7 +32,7 @@ export default function MultivariateDiscovery() {
             }
         }
         fetchData();
-    }, [state.anoInicio, state.anoFim]);
+    }, [state.anoSelecionado]);
 
     const chartData = useMemo(() => {
         if (!data.length) return [];

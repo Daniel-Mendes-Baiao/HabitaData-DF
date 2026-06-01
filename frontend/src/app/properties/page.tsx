@@ -41,6 +41,10 @@ export default function PropertyExplorer() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRegion, setFilterRegion] = useState('Todas');
 
+  // Pagination States
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 12;
+
   // IA States
   const [aiAnalysis, setAiAnalysis] = useState<string | null>(null);
   const [aiChat, setAiChat] = useState<{role: 'user' | 'ai', text: string}[]>([]);
@@ -88,6 +92,11 @@ export default function PropertyExplorer() {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [aiChat]);
 
+  // Reset de página quando a busca ou região mudam
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterRegion]);
+
   const filteredProperties = useMemo(() => {
     return properties.filter(p => {
       const matchSearch = (p.id_imovel?.toString() || '').includes(searchTerm) || 
@@ -96,6 +105,15 @@ export default function PropertyExplorer() {
       return matchSearch && matchRegion;
     });
   }, [properties, searchTerm, filterRegion]);
+
+  const paginatedProperties = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredProperties.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredProperties, currentPage]);
+
+  const totalPages = useMemo(() => {
+    return Math.ceil(filteredProperties.length / ITEMS_PER_PAGE);
+  }, [filteredProperties]);
 
   const regions = useMemo(() => {
     return ['Todas', ...new Set(properties.map(p => p.nome_regiao))];
@@ -463,43 +481,68 @@ export default function PropertyExplorer() {
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Sincronizando Base de Ativos...</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredProperties.map(p => (
-                  <div 
-                    key={p.id_imovel}
-                    onClick={() => setSelectedId(p.id_imovel)}
-                    className="glassmorphism p-8 rounded-[2.5rem] hover:border-emerald-500/30 transition-all cursor-pointer group active:scale-[0.97] glow-emerald-hover"
-                  >
-                    <div className="flex justify-between items-start mb-6">
-                      <div className="p-3 bg-slate-950/80 rounded-xl group-hover:bg-emerald-500 group-hover:text-slate-950 transition-colors">
-                        <Home size={20} />
+              <div className="space-y-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {paginatedProperties.map(p => (
+                    <div 
+                      key={p.id_imovel}
+                      onClick={() => setSelectedId(p.id_imovel)}
+                      className="glassmorphism p-8 rounded-[2.5rem] hover:border-emerald-500/30 transition-all cursor-pointer group active:scale-[0.97] glow-emerald-hover"
+                    >
+                      <div className="flex justify-between items-start mb-6">
+                        <div className="p-3 bg-slate-950/80 rounded-xl group-hover:bg-emerald-500 group-hover:text-slate-950 transition-colors">
+                          <Home size={20} />
+                        </div>
+                        <span className="px-3 py-1 bg-slate-950/80 text-slate-500 text-[10px] font-black uppercase tracking-widest rounded-full">
+                          #{p.id_imovel}
+                        </span>
                       </div>
-                      <span className="px-3 py-1 bg-slate-950/80 text-slate-500 text-[10px] font-black uppercase tracking-widest rounded-full">
-                        #{p.id_imovel}
-                      </span>
-                    </div>
-                    
-                    <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">{p.nome_regiao}</h3>
-                    <div className="flex items-center gap-2 mb-6">
-                      <Maximize2 size={14} className="text-emerald-500" />
-                      <span className="text-xl font-black text-white">{p.metragem} m²</span>
-                    </div>
+                      
+                      <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">{p.nome_regiao}</h3>
+                      <div className="flex items-center gap-2 mb-6">
+                        <Maximize2 size={14} className="text-emerald-500" />
+                        <span className="text-xl font-black text-white">{p.metragem} m²</span>
+                      </div>
 
-                    <div className="h-px bg-white/[0.06] w-full mb-6"></div>
+                      <div className="h-px bg-white/[0.06] w-full mb-6"></div>
 
-                    <div className="flex justify-between items-end">
-                      <div>
-                        <p className="text-[9px] font-bold text-slate-600 uppercase tracking-widest mb-1">Avaliação Última</p>
-                        <p className="text-lg font-black text-white">
-                          {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(p.ultimo_valor || 0)}
-                        </p>
-                      </div>
-                      <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ChevronLeft size={16} className="rotate-180" />
+                      <div className="flex justify-between items-end">
+                        <div>
+                          <p className="text-[9px] font-bold text-slate-600 uppercase tracking-widest mb-1">Avaliação Última</p>
+                          <p className="text-lg font-black text-white">
+                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(p.ultimo_valor || 0)}
+                          </p>
+                        </div>
+                        <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <ChevronLeft size={16} className="rotate-180" />
+                        </div>
                       </div>
                     </div>
+                  ))}
+                </div>
+
+                {/* Controles de Paginação Premium */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-center gap-6 pt-6">
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className="px-6 py-3 rounded-2xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-emerald-500/30 disabled:opacity-30 disabled:hover:text-slate-400 disabled:hover:border-slate-800 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer disabled:cursor-not-allowed"
+                    >
+                      Anterior
+                    </button>
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                      Página <strong className="text-emerald-400">{currentPage}</strong> de {totalPages}
+                    </span>
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                      className="px-6 py-3 rounded-2xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-emerald-500/30 disabled:opacity-30 disabled:hover:text-slate-400 disabled:hover:border-slate-800 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer disabled:cursor-not-allowed"
+                    >
+                      Próxima
+                    </button>
                   </div>
-                ))}
+                )}
               </div>
             )}
             {filteredProperties.length === 0 && !loading && (

@@ -268,13 +268,9 @@ def listar_imoveis() -> pd.DataFrame:
           FROM imoveis i
           JOIN regioes r ON r.id_regiao = i.id_regiao
           LEFT JOIN (
-              SELECT id_imovel, valor_estimado, ano
+              SELECT id_imovel, valor_estimado, MAX(ano) AS ano
                 FROM historico_valor_imovel
-               WHERE (id_imovel, ano) IN (
-                   SELECT id_imovel, MAX(ano)
-                     FROM historico_valor_imovel
-                    GROUP BY id_imovel
-               )
+               GROUP BY id_imovel
           ) h ON h.id_imovel = i.id_imovel
          ORDER BY i.id_imovel
     """

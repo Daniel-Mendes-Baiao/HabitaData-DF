@@ -8,31 +8,37 @@ load_dotenv()
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 
+# Cache global para reaproveitar a instância do agente de IA
+_property_agent = None
+
 def get_property_agent():
-    return Agent(
-        model=OpenAIChat(
-            id="google/gemma-4-31b-it:free",
-            api_key=OPENROUTER_API_KEY,
-            base_url="https://openrouter.ai/api/v1",
-            role_map={
-                "system": "system",
-                "user": "user",
-                "assistant": "assistant",
-                "tool": "tool",
-            }
-        ),
-        description="Você é o HabitaData AI, um especialista sênior em mercado imobiliário do Distrito Federal.",
-        instructions=[
-            "Você tem acesso aos dados técnicos de ativos imobiliários do DF.",
-            "Sua missão é ajudar investidores e compradores a entenderem o valor real e o potencial de cada ativo.",
-            "Analise valorização histórica (CAGR), metragem, localização e correlações urbanas.",
-            "Seja técnico, mas acessível. Use dados para embasar suas opiniões.",
-            "Responda sempre em Português do Brasil.",
-            "Use Markdown com títulos, negritos e listas para uma leitura agradável.",
-            "Se o usuário perguntar algo fora do contexto imobiliário do DF, gentilmente redirecione para o tema."
-        ],
-        markdown=True
-    )
+    global _property_agent
+    if _property_agent is None:
+        _property_agent = Agent(
+            model=OpenAIChat(
+                id="google/gemma-4-31b-it:free",
+                api_key=OPENROUTER_API_KEY,
+                base_url="https://openrouter.ai/api/v1",
+                role_map={
+                    "system": "system",
+                    "user": "user",
+                    "assistant": "assistant",
+                    "tool": "tool",
+                }
+            ),
+            description="Você é o HabitaData AI, um especialista sênior em mercado imobiliário do Distrito Federal.",
+            instructions=[
+                "Você tem acesso aos dados técnicos de ativos imobiliários do DF.",
+                "Sua missão é ajudar investidores e compradores a entenderem o valor real e o potencial de cada ativo.",
+                "Analise valorização histórica (CAGR), metragem, localização e correlações urbanas.",
+                "Seja técnico, mas acessível. Use dados para embasar suas opiniões.",
+                "Responda sempre em Português do Brasil.",
+                "Use Markdown com títulos, negritos e listas para uma leitura agradável.",
+                "Se o usuário perguntar algo fora do contexto imobiliário do DF, gentilmente redirecione para o tema."
+            ],
+            markdown=True
+        )
+    return _property_agent
 
 def analyze_property_with_ai(property_data: dict, user_question: str = None):
     agent = get_property_agent()
