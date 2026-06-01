@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import Link from 'next/link';
+import type { LucideIcon } from 'lucide-react';
 import { 
     BookOpen, 
     TrendingUp, 
@@ -12,10 +13,18 @@ import {
     BarChart, 
     MousePointer2,
     Info,
-    HelpCircle
+    Layers,
 } from 'lucide-react';
 
-const MetricCard = ({ icon: Icon, title, description, formula, impact }: any) => (
+type MetricCardProps = {
+    icon: LucideIcon;
+    title: string;
+    description: string;
+    formula?: string;
+    impact: string;
+};
+
+const MetricCard = ({ icon: Icon, title, description, formula, impact }: MetricCardProps) => (
     <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl hover:border-emerald-500/30 transition-all group">
         <div className="flex items-start gap-4">
             <div className="p-3 bg-slate-800 rounded-xl group-hover:bg-emerald-500/10 group-hover:text-emerald-400 transition-colors">
@@ -184,33 +193,14 @@ export default function OnboardingPage() {
                 <div className="bg-slate-950 p-8 rounded-xl text-center space-y-4">
                     <h3 className="text-xl font-bold text-white">Pronto para começar?</h3>
                     <p className="text-slate-400">Sua jornada pela inteligência de dados imobiliários do DF começa agora.</p>
-                    <a 
-                        href="/" 
+                    <Link
+                        href="/"
                         className="inline-block bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-8 rounded-full transition-all shadow-lg shadow-emerald-500/20"
                     >
                         Ir para o Dashboard
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>
     );
 }
-
-const Layers = ({ className, size }: { className?: string, size?: number }) => (
-    <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        width={size || 24} 
-        height={size || 24} 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
-        strokeWidth="2" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-        className={className}
-    >
-        <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.1 6.3a2 2 0 0 0 0 3.38l9.07 4.12a2 2 0 0 0 1.66 0l9.07-4.12a2 2 0 0 0 0-3.38Z" />
-        <path d="m2.1 14.74 9.07 4.12a2 2 0 0 0 1.66 0l9.07-4.12" />
-        <path d="m2.1 10.56 9.07 4.12a2 2 0 0 0 1.66 0l9.07-4.12" />
-    </svg>
-);

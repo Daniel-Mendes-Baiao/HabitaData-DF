@@ -15,5 +15,7 @@ def ai_analyze_property(request: AIAnalysisRequest):
     try:
         result = analyze_property_with_ai(request.property_data, request.user_question)
         return {"analysis": result}
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=502, detail=f"Erro ao processar análise com IA: {e}")

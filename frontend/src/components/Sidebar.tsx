@@ -4,12 +4,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import {
-    Map as MapIcon,
     Compass,
     Search,
     Activity,
     ChevronRight,
-    Zap,
     BookOpen,
     Target,
     Server,

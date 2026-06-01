@@ -442,11 +442,17 @@ def get_temporal_growth_indices(
                AVG(i.distancia_metro_km) as dist_metro,
                AVG(i.escolas_1km) as escolas,
                AVG(i.indice_criminalidade) as crime,
-               AVG(m.valor_medio) as preco_medio
+               AVG(m.valor_medio) as preco_medio,
+               AVG(m.preco_m2) as preco_m2,
+               AVG(m.n_imoveis) as n_imoveis
           FROM infraestrutura_regional i
           JOIN regioes r ON r.id_regiao = i.id_regiao
           LEFT JOIN (
-              SELECT imp.id_regiao, hist.ano, AVG(hist.valor_estimado) as valor_medio
+              SELECT imp.id_regiao,
+                     hist.ano,
+                     AVG(hist.valor_estimado) as valor_medio,
+                     AVG(hist.valor_estimado / imp.metragem) as preco_m2,
+                     COUNT(hist.id_imovel) as n_imoveis
               FROM historico_valor_imovel hist
               JOIN imoveis imp ON imp.id_imovel = hist.id_imovel
               GROUP BY imp.id_regiao, hist.ano
@@ -468,23 +474,29 @@ def get_temporal_growth_indices(
         group = group.sort_values("ano")
         first_row = group.iloc[0]
         
+        max_sample = group["n_imoveis"].max()
+        min_sample = max(3, max_sample * 0.2)
+        stable_group = group[group["n_imoveis"] >= min_sample]
+        base_row = stable_group.iloc[0] if not stable_group.empty else group.iloc[0]
+
         # Evitar divisão por zero e normalizar
-        for col in ["dist_metro", "escolas", "crime", "preco_medio"]:
+        for col in ["dist_metro", "escolas", "crime", "preco_medio", "preco_m2"]:
             # Preencher NaNs na coluna original se existirem
             group[col] = group[col].ffill().bfill().fillna(0)
-            
-            base_val = group[col].iloc[0] if len(group) > 0 else 0
-            
+
+            base_val = base_row[col] if col in base_row else group[col].iloc[0]
+
             # Salvar valor real
             group[f"{col}_raw"] = group[col]
-            
+
             if pd.isnull(base_val) or base_val == 0:
                 group[f"{col}_idx"] = 100.0
             else:
                 group[f"{col}_idx"] = (group[col] / base_val) * 100
-            
+
+        group["base_ano"] = int(base_row["ano"])
+        group["amostra_estavel"] = group["n_imoveis"] >= min_sample
         results.append(group)
         
     final_df = pd.concat(results).reset_index(drop=True) if results else pd.DataFrame()
     return final_df
-

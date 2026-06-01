@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Preço do aluguel de imóveis no Distrito Federal",
+    "provider": "Kaggle",
+    "url": "https://www.kaggle.com/datasets/matheusnbrega/preo-do-aluguel-de-imveis-no-distrito-federal",
+    "usage": "Imóveis base: preço de aluguel, área, quartos, tipo e bairro."
+  },
+  {
+    "name": "IVG-R - Índice de Valores de Garantia de Imóveis Residenciais",
+    "provider": "Banco Central do Brasil / SGS 21340",
+    "url": "https://dadosabertos.bcb.gov.br/dataset/21340-indice-de-valores-de-garantia-de-imoveis-residenciais-financiados-ivg-r",
+    "usage": "Retroprojeção da série histórica de valores dos imóveis."
+  },
+  {
+    "name": "Crimes Contra o Patrimônio - CCP",
+    "provider": "SSP-DF / Portal de Dados Abertos DF",
+    "url": "https://dados.df.gov.br/dataset/crimes-contra-o-patrimonio-ccp",
+    "usage": "Índice de criminalidade por Região Administrativa e ano."
+  },
+  {
+    "name": "PDAD - Pesquisa Distrital por Amostra de Domicílios",
+    "provider": "IPEDF Codeplan",
+    "url": "https://www.ipe.df.gov.br/pdad",
+    "usage": "Compatibilização do índice de desenvolvimento regional."
+  },
+  {
+    "name": "Geoportal DF / limites e infraestrutura urbana",
+    "provider": "SEDUH-DF / IPEDF",
+    "url": "https://www.seduh.df.gov.br/plataforma-geoportal-da-lei-6-412-2019/",
+    "usage": "Referência de Regiões Administrativas, metrô e infraestrutura territorial."
+  },
+  {
+    "name": "Censo Escolar, CNES e OpenStreetMap",
+    "provider": "INEP, Ministério da Saúde e OSM/Geofabrik",
+    "url": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar",
+    "usage": "Referência para escolas, saúde e pontos comerciais por região."
+  }
+]
