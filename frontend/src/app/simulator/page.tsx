@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { regionsAPI, marketAPI, aiAPI } from '@/services/api';
+import { usePageContext } from '@/hooks/usePageContext';
 import {
   Calculator,
   TrendingUp,
@@ -48,6 +49,18 @@ export default function InvestmentSimulator() {
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [chatInput, setChatInput] = useState('');
   const chatEndRef = useRef<HTMLDivElement>(null);
+
+  usePageContext({
+    route: '/simulator',
+    screenTitle: 'Simulador Financeiro',
+    activeFilters: {
+      regiao: selectedRegion,
+      valorInvestimento: investmentValue,
+      anoCompra: buyYear,
+      anoVenda: sellYear,
+    },
+    selectedData: result ?? undefined,
+  });
 
   useEffect(() => {
     async function fetchBaseData() {

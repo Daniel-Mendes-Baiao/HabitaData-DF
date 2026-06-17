@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePageContext } from '@/hooks/usePageContext';
 import type { LucideIcon } from 'lucide-react';
 import { 
     BookOpen, 
@@ -68,6 +69,11 @@ const Activity = ({ className }: { className?: string }) => (
 );
 
 export default function OnboardingPage() {
+    usePageContext({
+        route: '/onboarding',
+        screenTitle: 'Guia de Uso & Métricas',
+    });
+
     return (
         <div className="p-8 max-w-6xl mx-auto space-y-12 pb-20">
             {/* Hero Section */}

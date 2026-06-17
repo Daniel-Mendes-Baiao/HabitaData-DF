@@ -59,3 +59,65 @@ export type AIPropertyPayload = PropertyDetails | {
   cagr_pct: number;
   history: PropertyHistoryPoint[];
 };
+
+// ---------------------------------------------------------------------------
+// Chatbot Global — novos tipos
+// ---------------------------------------------------------------------------
+
+/** Contexto da tela atual, enviado automaticamente a cada mensagem do chatbot. */
+export type PageContext = {
+  /** Rota da tela atual, ex: "/properties" */
+  route: string;
+  /** Título legível da tela, ex: "Detalhamento de Ativos" */
+  screenTitle: string;
+  /** Filtros ativos na tela atual (ex: ano selecionado, região) */
+  activeFilters?: Record<string, unknown>;
+  /** Dado selecionado pelo usuário na tela (ex: imóvel em foco) */
+  selectedData?: unknown;
+};
+
+/** Mensagem no histórico do chat global. */
+export type GlobalChatMessage = {
+  id: string;
+  role: 'user' | 'ai';
+  text: string;
+  timestamp: Date;
+};
+
+// ---------------------------------------------------------------------------
+// Gráficos dinâmicos no chatbot — tipos de renderização (somente frontend)
+// ---------------------------------------------------------------------------
+
+/**
+ * Schema JSON que a IA emite dentro de um bloco ~~~chart.
+ * O frontend parseia e converte para dados do Plotly.
+ */
+export type ChatChartPayload = {
+  /** Tipo de gráfico Plotly a renderizar */
+  type: 'bar' | 'line' | 'scatter' | 'pie';
+  /** Título exibido acima do gráfico */
+  title: string;
+  /** Rótulo do eixo X (opcional) */
+  xAxisTitle?: string;
+  /** Rótulo do eixo Y (opcional) */
+  yAxisTitle?: string;
+  /** Uma ou mais séries de dados */
+  series: {
+    /** Nome da série (aparece na legenda) */
+    name: string;
+    /** Valores do eixo X ou rótulos (pie) */
+    x: (string | number)[];
+    /** Valores numéricos do eixo Y */
+    y: number[];
+    /** Cor hex da série (ex: "#10b981") */
+    color?: string;
+  }[];
+};
+
+/**
+ * Segmento resultante do parsing de uma mensagem AI.
+ * Uma mensagem pode ter N segmentos intercalados de texto e gráfico.
+ */
+export type MessageSegment =
+  | { type: 'text'; content: string }
+  | { type: 'chart'; payload: ChatChartPayload };

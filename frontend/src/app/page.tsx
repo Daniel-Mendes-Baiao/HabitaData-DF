@@ -1,6 +1,7 @@
 'use client';
 
 import { useAnalytics } from '@/context/AnalyticsContext';
+import { usePageContext } from '@/hooks/usePageContext';
 import { 
   TrendingUp, 
   Map as MapIcon, 
@@ -16,6 +17,12 @@ import Link from 'next/link';
 
 export default function DashboardHome() {
   const { state } = useAnalytics();
+
+  usePageContext({
+    route: '/',
+    screenTitle: 'Dashboard Central',
+    activeFilters: { anoSelecionado: state.anoSelecionado },
+  });
 
   const stats = [
     { label: 'Valorização Média', value: '5.8%', icon: <TrendingUp className="text-emerald-400 w-5 h-5" />, trend: '+0.4%', trendType: 'positive' },

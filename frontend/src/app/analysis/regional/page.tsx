@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { useAnalytics } from '@/context/AnalyticsContext';
 import { analysisAPI } from '@/services/api';
+import { usePageContext } from '@/hooks/usePageContext';
 import { 
     Loader2, 
     TrendingUp, 
@@ -36,6 +37,16 @@ export default function RegionalAnalysis() {
     const [temporalData, setTemporalData] = useState<any[]>([]);
     const [selectedRegion, setSelectedRegion] = useState<string>('');
     const [compareRegions, setCompareRegions] = useState<string[]>([]);
+
+    usePageContext({
+        route: '/analysis/regional',
+        screenTitle: 'Análise por Região',
+        activeFilters: {
+            ano: state.anoSelecionado,
+            regiaoSelecionada: selectedRegion,
+            regiaoComparadas: compareRegions,
+        },
+    });
 
     useEffect(() => {
         async function loadData() {

@@ -6,6 +6,7 @@ import type { Data, Layout } from 'plotly.js';
 import { useAnalytics } from '@/context/AnalyticsContext';
 import { analysisAPI } from '@/services/api';
 import { Loader2, Info, TrendingUp, AlertCircle } from 'lucide-react';
+import { usePageContext } from '@/hooks/usePageContext';
 
 const Plot = dynamic(() => import('react-plotly.js'), {
     ssr: false,
@@ -31,6 +32,15 @@ export default function MultivariateDiscovery() {
     const [data, setData] = useState<MultivariateRow[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    usePageContext({
+        route: '/discovery/multivariate',
+        screenTitle: 'Explorador Multivariado',
+        activeFilters: {
+            ano: state.anoSelecionado,
+            variaveisAnalisadas: `${state.variableX} vs ${state.variableY}`,
+        },
+    });
 
     useEffect(() => {
         async function fetchData() {

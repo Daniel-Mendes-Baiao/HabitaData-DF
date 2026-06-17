@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { AIPropertyPayload } from '@/types';
+import type { AIPropertyPayload, PageContext, GlobalChatMessage } from '@/types';
 
 const api = axios.create({
     baseURL: 'http://127.0.0.1:8000/api',
@@ -94,6 +94,24 @@ export const aiAPI = {
     },
 };
 
-
+export const chatAPI = {
+    /**
+     * Envia uma mensagem ao chat global, com o contexto da tela atual e histórico.
+     * Retorna `{ reply: string }`.
+     */
+    sendMessage: async (
+        message: string,
+        pageContext: PageContext,
+        history: Pick<GlobalChatMessage, 'role' | 'text'>[],
+    ): Promise<{ reply: string }> => {
+        const res = await api.post('/ai/chat', {
+            message,
+            page_context: pageContext,
+            history,
+        });
+        return res.data;
+    },
+};
 
 export default api;
+

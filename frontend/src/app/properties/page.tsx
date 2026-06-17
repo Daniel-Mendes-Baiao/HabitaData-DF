@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import ReactMarkdown from 'react-markdown';
 import { propertiesAPI, aiAPI } from '@/services/api';
+import { usePageContext } from '@/hooks/usePageContext';
 import { 
   Search, 
   Home, 
@@ -91,6 +92,17 @@ export default function PropertyExplorer() {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [aiChat]);
+
+  // Registrar contexto da tela no chatbot global
+  usePageContext({
+    route: '/properties',
+    screenTitle: 'Detalhamento de Ativos',
+    activeFilters: {
+      busca: searchTerm || undefined,
+      regiao: filterRegion !== 'Todas' ? filterRegion : undefined,
+    },
+    selectedData: detailData ?? undefined,
+  });
 
   // Reset de página quando a busca ou região mudam
   useEffect(() => {
