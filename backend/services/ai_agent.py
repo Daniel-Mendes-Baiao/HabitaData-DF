@@ -64,6 +64,172 @@ REGRAS CRÍTICAS:
 6. Use cores da paleta: #10b981 (emerald), #3b82f6 (blue), #f59e0b (amber), #8b5cf6 (purple).
 """
 
+# ---------------------------------------------------------------------------
+# Ferramentas de Análise (Tools para o Agente)
+# ---------------------------------------------------------------------------
+
+def listar_todos_imoveis() -> list[dict]:
+    """
+    Retorna a lista de todos os imóveis cadastrados no sistema, incluindo ID, região, metragem, quartos, banheiros, ano de entrega e o último valor estimado.
+    Útil para listar os IDs e características básicas de todos os imóveis disponíveis.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.listar_imoveis())
+
+def obter_evolucao_imovel(id_imovel: int) -> list[dict]:
+    """
+    Retorna a evolução histórica anual de preço (série histórica de valores estimados) e a variação ano a ano (YoY) de um imóvel específico a partir do seu ID.
+    Use quando o usuário pedir a evolução de preço ou histórico detalhado de um imóvel específico.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.evolucao_imovel(id_imovel))
+
+def obter_cagr_e_valorizacao_imovel(id_imovel: int) -> dict:
+    """
+    Retorna o CAGR (%) (Compound Annual Growth Rate / Taxa de Crescimento Anual Composto) e a valorização percentual total (%) de um imóvel específico a partir do seu ID.
+    Use para analisar a taxa de retorno anualizada e a valorização total acumulada de um imóvel específico.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import scalar_to_json
+    cagr = scalar_to_json(an.cagr_imovel(id_imovel))
+    val = scalar_to_json(an.valorizacao_percentual(id_imovel))
+    return {"id_imovel": id_imovel, "cagr_pct": cagr, "total_appreciation_pct": val}
+
+def obter_top_imoveis_valorizados(n: int = 5, ano_inicio: int = 2010, ano_fim: int = 2025) -> list[dict]:
+    """
+    Retorna os N imóveis com maior CAGR (taxa de valorização anual) no período especificado.
+    Útil para encontrar e listar os imóveis mais rentáveis e com melhor desempenho histórico.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.top_valorizados(n, ano_inicio, ano_fim))
+
+def obter_top_imoveis_desvalorizados(n: int = 5, ano_inicio: int = 2010, ano_fim: int = 2025) -> list[dict]:
+    """
+    Retorna os N imóveis com menor CAGR (pior desempenho ou desvalorização) no período especificado.
+    Útil para encontrar e listar imóveis com pior rentabilidade histórica.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.top_desvalorizados(n, ano_inicio, ano_fim))
+
+def obter_cagr_medio_por_regiao(ano_inicio: int = 2010, ano_fim: int = 2025) -> list[dict]:
+    """
+    Calcula a taxa de valorização média (CAGR médio), mediana e desvio-padrão dos imóveis agrupados por região no período especificado.
+    Útil para saber quais regiões mais valorizaram no Distrito Federal de forma geral.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.valorizacao_media_por_regiao(ano_inicio, ano_fim))
+
+def obter_ranking_regioes_por_valorizacao(ano_inicio: int = 2010, ano_fim: int = 2025) -> list[dict]:
+    """
+    Retorna o ranking das regiões administrativas ordenadas por CAGR médio no período especificado.
+    Use para saber a posição relativa e classificação de valorização de cada região.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.ranking_regioes(ano_inicio, ano_fim))
+
+def obter_preco_medio_por_regiao(ano: int = 2025) -> list[dict]:
+    """
+    Retorna estatísticas de preço (média, mediana, mínimo, máximo) dos imóveis por região em um ano específico.
+    Use para responder qual é a região mais cara, mais barata ou obter o preço médio dos imóveis em determinado ano.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.preco_medio_por_regiao(ano))
+
+def obter_comparativo_regional_infraestrutura(ano_inicio: int = 2010, ano_fim: int = 2025) -> list[dict]:
+    """
+    Retorna o comparativo regional contendo o preço/m² médio, CAGR médio, distância média ao metrô, quantidade de escolas, segurança e criminalidade por região.
+    Use para responder perguntas comparativas de infraestrutura, segurança, relação risco/retorno e correlação urbana entre as regiões.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.get_regional_comparison_data(ano_inicio, ano_fim))
+
+def obter_evolucao_mercado(id_regiao: Optional[int] = None) -> list[dict]:
+    """
+    Retorna a evolução histórica anual do valor médio e mediana de mercado geral (se id_regiao for None) ou de uma região específica (passando o id_regiao).
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.evolucao_mercado(id_regiao))
+
+def obter_crescimento_anual_yoy_mercado(id_regiao: Optional[int] = None) -> list[dict]:
+    """
+    Calcula a variação percentual anual (ano a ano - YoY) do valor médio do mercado geral ou de uma região específica.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.crescimento_anual_mercado(id_regiao))
+
+def obter_impacto_metragem(ano_inicio: int = 2010, ano_fim: int = 2025) -> list[dict]:
+    """
+    Retorna o impacto do tamanho/metragem dos imóveis na taxa de valorização (CAGR) por faixa de área útil (ex: <=50m², 51-60m², etc.).
+    Use para responder qual tamanho de imóvel valoriza mais ou se imóveis menores valorizam mais rápido que imóveis grandes.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.impacto_metragem(ano_inicio, ano_fim))
+
+def obter_impacto_distancia_metro(ano: int = 2025) -> list[dict]:
+    """
+    Relaciona os valores dos imóveis com a distância média da região para as estações de metrô em um ano específico.
+    Use para analisar se a proximidade ao metrô afeta o preço ou valorização dos imóveis.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.impacto_distancia_metro(ano))
+
+def obter_impacto_criminalidade(ano_inicio: int = 2010, ano_fim: int = 2025) -> list[dict]:
+    """
+    Analisa a relação entre a criminalidade média (segurança) e a taxa de valorização (CAGR) dos imóveis por região.
+    Use para responder sobre o impacto da segurança/violência urbana na valorização imobiliária.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.impacto_criminalidade(ano_inicio, ano_fim))
+
+def obter_impacto_infraestrutura_e_valor_medio(ano_inicio: int = 2010, ano_fim: int = 2025) -> list[dict]:
+    """
+    Retorna o score composto de infraestrutura urbana das regiões (escolas, hospitais, comércio, segurança, metrô) relacionado com os valores médios de imóveis por ano.
+    Use para responder sobre o impacto do desenvolvimento urbano nos preços de mercado.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.impacto_infraestrutura(ano_inicio, ano_fim))
+
+def obter_correlacao_custo_m2_e_valor(ano_inicio: int = 2010, ano_fim: int = 2025) -> list[dict]:
+    """
+    Retorna a correlação estatística entre o custo de construção do m² regional e o preço final dos imóveis.
+    Use para responder se o preço do imóvel acompanha o custo da construção civil.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.correlacao_custo_m2(ano_inicio, ano_fim))
+
+def obter_matriz_correlacao_multivariada(ano_inicio: int = 2010, ano_fim: int = 2025) -> list[dict]:
+    """
+    Calcula a matriz de correlação estatística de Pearson cruzando todas as variáveis numéricas do dataset multivariado (metragem, quartos, banheiros, CAGR, distância metrô, escolas, criminalidade).
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.get_correlation_matrix(ano_inicio, ano_fim))
+
+def obter_indices_crescimento_temporal(regioes: Optional[list[str]] = None) -> list[dict]:
+    """
+    Retorna a evolução temporal e índices base 100 de fatores urbanos (metrô, escolas, criminalidade, preço do m²) de regiões administrativas específicas.
+    Use para analisar tendências e crescimento de longo prazo por cidade.
+    """
+    import analytics as an
+    from backend.services.analytics_adapter import df_to_dict
+    return df_to_dict(an.get_temporal_growth_indices(regioes))
+
+
 def get_property_agent() -> Agent:
     """Retorna a instância singleton do agente Agno (lazy initialization)."""
     global _property_agent
@@ -82,16 +248,40 @@ def get_property_agent() -> Agent:
             ),
             description="Você é o HabitaData AI, um especialista sênior em mercado imobiliário do Distrito Federal.",
             instructions=[
-                "Você tem acesso aos dados técnicos de ativos imobiliários do DF.",
+                "Você tem acesso a ferramentas/funções para obter dados dinâmicos do banco de dados/camada analítica do Distrito Federal.",
+                "Sempre que precisar responder a perguntas sobre preços, valorização, CAGR, infraestrutura ou comparação de regiões, utilize as funções/ferramentas apropriadas.",
+                "O bloco '### CONTEXTO DA TELA ATUAL' descreve o que o usuário está vendo na interface (filtros selecionados, tela atual, item selecionado). Use esses parâmetros/filtros nas chamadas de funções/ferramentas quando fizer sentido (ex: use o ano ou regiões listadas nos filtros se o usuário fizer uma pergunta implícita ou geral).",
+                "Você tem acesso aos dados técnicos de ativos imobiliários do DF através das ferramentas.",
                 "Sua missão é ajudar investidores e compradores a entenderem o valor real e o potencial de cada ativo.",
-                "Analise valorização histórica (CAGR), metragem, localização e correlações urbanas.",
-                "Seja técnico, mas acessível. Use dados para embasar suas opiniões.",
+                "Analise valorização histórica (CAGR), metragem, localização e correlações urbanas usando os resultados das funções chamadas.",
+                "Seja técnico, mas acessível. Use dados obtidos pelas ferramentas para embasar suas opiniões.",
                 "Responda sempre em Português do Brasil.",
                 "Use Markdown com títulos, negritos e listas para uma leitura agradável.",
                 "Se o usuário perguntar algo fora do contexto imobiliário do DF, gentilmente redirecione para o tema.",
                 _CHART_FORMAT_INSTRUCTIONS,
             ],
             markdown=True,
+            debug_mode=True,
+            tools=[
+                listar_todos_imoveis,
+                obter_evolucao_imovel,
+                obter_cagr_e_valorizacao_imovel,
+                obter_top_imoveis_valorizados,
+                obter_top_imoveis_desvalorizados,
+                obter_cagr_medio_por_regiao,
+                obter_ranking_regioes_por_valorizacao,
+                obter_preco_medio_por_regiao,
+                obter_comparativo_regional_infraestrutura,
+                obter_evolucao_mercado,
+                obter_crescimento_anual_yoy_mercado,
+                obter_impacto_metragem,
+                obter_impacto_distancia_metro,
+                obter_impacto_criminalidade,
+                obter_impacto_infraestrutura_e_valor_medio,
+                obter_correlacao_custo_m2_e_valor,
+                obter_matriz_correlacao_multivariada,
+                obter_indices_crescimento_temporal
+            ]
         )
     return _property_agent
 
@@ -150,8 +340,9 @@ def analyze_property_with_ai(property_data: dict, user_question: Optional[str] =
 
 def _build_page_context_block(page_context: dict) -> str:
     """
-    Recebe o page_context enviado pelo frontend e busca dados reais
-    dos serviços de analytics para enriquecer o contexto do agente.
+    Recebe o page_context enviado pelo frontend e descreve a tela atual e os filtros selecionados,
+    sem buscar dados do banco de dados/analytics de forma pública e procedural.
+    Serve para que o agente saiba em qual tela o usuário está e quais filtros/dados estão ativos.
     """
     route = page_context.get("route", "/")
     screen_title = page_context.get("screenTitle", "Dashboard")
@@ -166,74 +357,8 @@ def _build_page_context_block(page_context: dict) -> str:
     if active_filters:
         lines.append(f"- **Filtros ativos**: {active_filters}")
 
-    # Enriquecimento por rota: busca dados reais do analytics layer
-    try:
-        import analytics as an
-        from backend.services.analytics_adapter import df_to_dict, scalar_to_json
-
-        # ---- Dashboard Central ----
-        if route == "/":
-            try:
-                df_ranking = an.ranking_regioes(2021)
-                top3 = df_to_dict(df_ranking.head(3))
-                lines.append("\n### DADOS DO DASHBOARD (Top 3 Regiões por CAGR)")
-                for r in top3:
-                    lines.append(
-                        f"- **{r.get('nome_regiao', '?')}**: CAGR {r.get('cagr_medio_pct', 0):.2f}%"
-                    )
-            except Exception:
-                pass
-
-        # ---- Análise Regional ----
-        elif route == "/analysis/regional":
-            ano = int(active_filters.get("ano", 2021)) if active_filters else 2021
-            try:
-                df_reg = an.get_regional_comparison_data(ano - 5, ano)
-                sample = df_to_dict(df_reg.head(5))
-                lines.append(f"\n### DADOS DE ANÁLISE REGIONAL (ano ref.: {ano})")
-                for r in sample:
-                    nome = r.get("nome_regiao", "?")
-                    cagr = r.get("cagr_medio_pct") or r.get("cagr_pct") or 0
-                    preco = r.get("valor_m2") or r.get("preco_m2_raw") or 0
-                    lines.append(f"- **{nome}**: CAGR ~{cagr:.2f}%, Preço/m² ~R${preco:,.0f}")
-            except Exception:
-                pass
-
-        # ---- Detalhamento de Ativos ----
-        elif route == "/properties":
-            if selected_data and isinstance(selected_data, dict):
-                meta = selected_data.get("metadata", {})
-                lines.append("\n### ATIVO SELECIONADO PELO USUÁRIO")
-                lines.append(f"- **ID**: {meta.get('id_imovel', '?')}")
-                lines.append(f"- **Região**: {meta.get('nome_regiao', '?')}")
-                lines.append(f"- **Metragem**: {meta.get('metragem', '?')} m²")
-                lines.append(f"- **Quartos/Banheiros**: {meta.get('quartos', '?')}/{meta.get('banheiros', '?')}")
-                cagr = selected_data.get("cagr_pct", 0)
-                total_ap = selected_data.get("total_appreciation_pct", 0)
-                lines.append(f"- **CAGR**: {cagr:.2f}%")
-                lines.append(f"- **Valorização Total**: {total_ap:.2f}%")
-            else:
-                try:
-                    df_top = an.top_valorizados(5, 2010, 2025)
-                    top5 = df_to_dict(df_top)
-                    lines.append("\n### TOP 5 ATIVOS MAIS VALORIZADOS")
-                    for p in top5:
-                        lines.append(
-                            f"- ID {p.get('id_imovel', '?')} ({p.get('nome_regiao', '?')}): CAGR {p.get('cagr_pct', 0):.2f}%"
-                        )
-                except Exception:
-                    pass
-
-        # ---- Simulador Financeiro ----
-        elif route == "/simulator":
-            if selected_data and isinstance(selected_data, dict):
-                lines.append("\n### PARÂMETROS DO SIMULADOR")
-                for k, v in selected_data.items():
-                    lines.append(f"- **{k}**: {v}")
-
-    except Exception:
-        # Se o analytics não estiver disponível, continua sem enriquecimento
-        pass
+    if selected_data:
+        lines.append(f"- **Dados/Item Selecionado**: {selected_data}")
 
     return "\n".join(lines)
 
