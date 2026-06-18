@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { regionsAPI, marketAPI, aiAPI } from '@/services/api';
+import { regionsAPI, aiAPI, analysisAPI } from '@/services/api';
 import { usePageContext } from '@/hooks/usePageContext';
 import {
   Calculator,
@@ -65,20 +65,20 @@ export default function InvestmentSimulator() {
   useEffect(() => {
     async function fetchBaseData() {
       try {
-        const [regRes, mktDist] = await Promise.all([
-          regionsAPI.getRanking(2025),
-          marketAPI.getPriceDistribution(2024),
+        // getRanking(ano_inicio, ano_fim) — banco só tem dados até 2024
+        const [regRes, summaryRes] = await Promise.all([
+          regionsAPI.getRanking(2010, 2024),
+          analysisAPI.getSummary(),
         ]);
+
         setRegions(regRes.data);
-        const allCagrs = mktDist.data
-          .map((d: any) => d.cagr_pct)
-          .filter((v: number) => v > 0);
-        const avg =
-          allCagrs.reduce((a: number, b: number) => a + b, 0) / allCagrs.length;
-        setMarketCagr(avg || 4.82);
+
+        // CAGR médio do mercado — vem direto do endpoint de summary (pré-calculado no backend)
+        setMarketCagr(summaryRes.cagr_medio_pct ?? 4.77);
+
         if (regRes.data.length > 0) setSelectedRegion(regRes.data[0].nome_regiao);
       } catch (err) {
-        console.error(err);
+        console.error('Erro ao carregar dados do simulador:', err);
       }
     }
     fetchBaseData();

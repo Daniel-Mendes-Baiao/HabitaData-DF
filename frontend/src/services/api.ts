@@ -1,117 +1,153 @@
 import axios from 'axios';
 import type { AIPropertyPayload, PageContext, GlobalChatMessage } from '@/types';
 
+// ---------------------------------------------------------------------------
+// Configuração base
+// ---------------------------------------------------------------------------
+
+/** URL base da API FastAPI. Altere aqui se o backend rodar em outra porta. */
+const API_BASE_URL = 'http://127.0.0.1:8000/api';
+
 const api = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api',
-    headers: {
-        'Content-Type': 'application/json',
-    },
+    baseURL: API_BASE_URL,
+    headers: { 'Content-Type': 'application/json' },
 });
 
+// ---------------------------------------------------------------------------
+// Mercado — /api/market
+// ---------------------------------------------------------------------------
+
 export const marketAPI = {
-    getEvolution: async (regiao_id?: number) => {
-        const res = await api.get('/market/evolution', { params: { regiao_id } });
-        return res.data;
-    },
-    getGrowth: async (regiao_id?: number) => {
-        const res = await api.get('/market/growth', { params: { regiao_id } });
-        return res.data;
-    },
-    getPriceDistribution: async (ano = 2021) => {
-        const res = await api.get('/market/price_distribution', { params: { ano } });
-        return res.data;
-    },
+    /** Evolução histórica do valor médio de mercado (geral ou por região). */
+    getEvolution: (regiao_id?: number) =>
+        api.get('/market/evolution', { params: { regiao_id } }).then(r => r.data),
+
+    /** Variação percentual anual (YoY) do mercado (geral ou por região). */
+    getGrowth: (regiao_id?: number) =>
+        api.get('/market/growth', { params: { regiao_id } }).then(r => r.data),
+
+    /** Distribuição do CAGR de todos os imóveis no período. */
+    getPriceDistribution: (ano_inicio = 2010, ano_fim = 2025) =>
+        api.get('/market/price_distribution', { params: { ano_inicio, ano_fim } }).then(r => r.data),
 };
+
+// ---------------------------------------------------------------------------
+// Regiões — /api/regions
+// ---------------------------------------------------------------------------
 
 export const regionsAPI = {
-    getRanking: async (ano = 2021) => {
-        const res = await api.get('/regions/ranking', { params: { ano } });
-        return res.data;
-    },
-    getAveragePrice: async (ano = 2025) => {
-        const res = await api.get('/regions/average_price', { params: { ano } });
-        return res.data;
-    },
-    getAppreciation: async (ano = 2021) => {
-        const res = await api.get('/regions/appreciation', { params: { ano } });
-        return res.data;
-    },
+    /** Ranking de regiões ordenado por CAGR médio. */
+    getRanking: (ano_inicio = 2010, ano_fim = 2025) =>
+        api.get('/regions/ranking', { params: { ano_inicio, ano_fim } }).then(r => r.data),
+
+    /** Preço médio, mediana, mínimo e máximo por região no ano informado. */
+    getAveragePrice: (ano = 2025) =>
+        api.get('/regions/average_price', { params: { ano } }).then(r => r.data),
+
+    /** CAGR médio e desvio-padrão por região no período. */
+    getAppreciation: (ano_inicio = 2010, ano_fim = 2025) =>
+        api.get('/regions/appreciation', { params: { ano_inicio, ano_fim } }).then(r => r.data),
 };
+
+// ---------------------------------------------------------------------------
+// Ativos (Imóveis) — /api/properties
+// ---------------------------------------------------------------------------
 
 export const propertiesAPI = {
-    list: async () => {
-        const res = await api.get('/properties/');
-        return res.data;
-    },
-    getDetails: async (imovel_id: number) => {
-        const res = await api.get(`/properties/${imovel_id}`);
-        return res.data;
-    },
-    getTopAppreciated: async (limit = 10) => {
-        const res = await api.get('/properties/top/appreciated', { params: { limit } });
-        return res.data;
-    },
+    /** Lista todos os imóveis com metadados básicos. */
+    list: () =>
+        api.get('/properties/').then(r => r.data),
+
+    /** Detalhamento completo de um imóvel: histórico, CAGR, valorização. */
+    getDetails: (imovel_id: number) =>
+        api.get(`/properties/${imovel_id}`).then(r => r.data),
+
+    /** Top N imóveis mais valorizados. */
+    getTopAppreciated: (limit = 10, ano_inicio = 2010, ano_fim = 2025) =>
+        api.get('/properties/top/appreciated', { params: { limit, ano_inicio, ano_fim } }).then(r => r.data),
+
+    /** Top N imóveis menos valorizados. */
+    getTopDepreciated: (limit = 10, ano_inicio = 2010, ano_fim = 2025) =>
+        api.get('/properties/top/depreciated', { params: { limit, ano_inicio, ano_fim } }).then(r => r.data),
 };
+
+// ---------------------------------------------------------------------------
+// Geoespacial — /api/geospatial
+// ---------------------------------------------------------------------------
 
 export const geospatialAPI = {
-    getRegions3D: async (ano = 2021) => {
-        const res = await api.get('/geospatial/map/regions3d', { params: { ano } });
-        return res.data;
-    },
-    getInfrastructureImpact: async (ano = 2021) => {
-        const res = await api.get('/geospatial/urban_factors/infrastructure', { params: { ano } });
-        return res.data;
-    },
+    /** Grid virtual 3D para Deck.gl com interpolação IDW por região. */
+    getRegions3D: (ano = 2021) =>
+        api.get('/geospatial/map/regions3d', { params: { ano } }).then(r => r.data),
+
+    /** Score de infraestrutura urbana por região vs valorização. */
+    getInfrastructureImpact: (ano_inicio = 2010, ano_fim = 2025) =>
+        api.get('/geospatial/urban_factors/infrastructure', { params: { ano_inicio, ano_fim } }).then(r => r.data),
 };
+
+// ---------------------------------------------------------------------------
+// Análise Avançada — /api/analysis
+// ---------------------------------------------------------------------------
 
 export const analysisAPI = {
-    getMultivariate: async (ano = 2021) => {
-        const res = await api.get('/analysis/multivariate', { params: { ano } });
-        return res.data;
-    },
-    getCorrelationMatrix: async (ano = 2021) => {
-        const res = await api.get('/analysis/correlation-matrix', { params: { ano } });
-        return res.data;
-    },
-    getFactorsImpact: async (ano = 2021) => {
-        const res = await api.get('/analysis/factors-impact', { params: { ano } });
-        return res.data;
-    },
-    getRegionalComparison: async (ano = 2021) => {
-        const res = await api.get('/analysis/regional-comparison', { params: { ano } });
-        return res.data;
-    },
-    getGrowthIndices: async (regioes?: string) => {
-        const res = await api.get('/analysis/growth-indices', { params: { regioes } });
-        return res.data;
-    },
+    /** Dataset multivariado para o ano selecionado (5 anos de CAGR). */
+    getMultivariate: (ano = 2021) =>
+        api.get('/analysis/multivariate', { params: { ano } }).then(r => r.data),
+
+    /** Matriz de correlação de Pearson ({z, x, y} pronto para Plotly heatmap). */
+    getCorrelationMatrix: (ano = 2021) =>
+        api.get('/analysis/correlation-matrix', { params: { ano } }).then(r => r.data),
+
+    /** Impacto de fatores urbanos (crime + infraestrutura) na valorização. */
+    getFactorsImpact: (ano_inicio = 2010, ano_fim = 2025) =>
+        api.get('/analysis/factors-impact', { params: { ano_inicio, ano_fim } }).then(r => r.data),
+
+    /** Dados agregados por região para o ano selecionado. */
+    getRegionalComparison: (ano = 2021) =>
+        api.get('/analysis/regional-comparison', { params: { ano } }).then(r => r.data),
+
+    /** Índices base 100 de métricas urbanas ao longo do tempo. */
+    getGrowthIndices: (regioes?: string) =>
+        api.get('/analysis/growth-indices', { params: { regioes } }).then(r => r.data),
+
+    /**
+     * Resumo executivo para o Dashboard Central.
+     * Retorna: cagr_medio_pct, custo_m2_medio, indice_seguranca, total_imoveis.
+     */
+    getSummary: (): Promise<{
+        cagr_medio_pct: number | null;
+        custo_m2_medio: number | null;
+        indice_seguranca: number | null;
+        total_imoveis: number;
+    }> =>
+        api.get('/analysis/summary').then(r => r.data),
 };
 
+// ---------------------------------------------------------------------------
+// IA — /api/ai
+// ---------------------------------------------------------------------------
+
 export const aiAPI = {
-    analyze: async (property_data: AIPropertyPayload, user_question?: string) => {
-        const res = await api.post('/ai/analyze', { property_data, user_question });
-        return res.data;
-    },
+    /** Análise profunda de um imóvel específico com o agente de IA. */
+    analyze: (property_data: AIPropertyPayload, user_question?: string) =>
+        api.post('/ai/analyze', { property_data, user_question }).then(r => r.data),
 };
 
 export const chatAPI = {
     /**
-     * Envia uma mensagem ao chat global, com o contexto da tela atual e histórico.
+     * Envia uma mensagem ao chat global com contexto da tela e histórico.
      * Retorna `{ reply: string }`.
      */
-    sendMessage: async (
+    sendMessage: (
         message: string,
         pageContext: PageContext,
         history: Pick<GlobalChatMessage, 'role' | 'text'>[],
-    ): Promise<{ reply: string }> => {
-        const res = await api.post('/ai/chat', {
+    ): Promise<{ reply: string }> =>
+        api.post('/ai/chat', {
             message,
             page_context: pageContext,
             history,
-        });
-        return res.data;
-    },
+        }).then(r => r.data),
 };
 
 export default api;
-

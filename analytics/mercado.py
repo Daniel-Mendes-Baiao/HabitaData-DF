@@ -230,3 +230,68 @@ def crescimento_anual_mercado(id_regiao: int | None = None) -> pd.DataFrame:
         return df
     df["variacao_yoy_pct"] = df["valor_medio"].pct_change() * 100
     return df
+
+
+# ---------------------------------------------------------------------------
+# 6. Evolução histórica por NOME de região (aceita string)
+# ---------------------------------------------------------------------------
+
+def evolucao_mercado_por_nome_regiao(nome_regiao: str) -> pd.DataFrame:
+    """
+    Retorna a evolução histórica anual do valor médio dos imóveis de uma
+    região pelo seu NOME (não precisa do id_regiao).
+    Busca parcial e case-insensitive (ex: 'aguas claras' encontra 'AGUAS CLARAS').
+
+    Colunas: ano | nome_regiao | n_imoveis | valor_medio | valor_mediana | variacao_yoy_pct
+    """
+    sql = """
+        SELECT h.ano,
+               r.nome_regiao,
+               COUNT(h.id_imovel)    AS n_imoveis,
+               AVG(h.valor_estimado) AS valor_medio
+          FROM historico_valor_imovel h
+          JOIN imoveis i ON i.id_imovel = h.id_imovel
+          JOIN regioes r ON r.id_regiao = i.id_regiao
+         WHERE UPPER(r.nome_regiao) LIKE UPPER(:nome)
+         GROUP BY h.ano, r.nome_regiao
+         ORDER BY h.ano
+    """
+    df_agg = query(sql, {"nome": f"%{nome_regiao}%"})
+    if df_agg.empty:
+        return df_agg
+
+    sql_raw = """
+        SELECT h.ano, h.valor_estimado
+          FROM historico_valor_imovel h
+          JOIN imoveis i ON i.id_imovel = h.id_imovel
+          JOIN regioes r ON r.id_regiao = i.id_regiao
+         WHERE UPPER(r.nome_regiao) LIKE UPPER(:nome)
+    """
+    raw = query(sql_raw, {"nome": f"%{nome_regiao}%"})
+    if not raw.empty:
+        medianas = raw.groupby("ano")["valor_estimado"].median().rename("valor_mediana")
+        df_agg = df_agg.merge(medianas, on="ano", how="left")
+
+    df_agg["variacao_yoy_pct"] = df_agg["valor_medio"].pct_change() * 100
+    return df_agg
+
+
+# ---------------------------------------------------------------------------
+# 7. Maior valorização YoY por nome de região
+# ---------------------------------------------------------------------------
+
+def maior_valorizacao_yoy_por_regiao(nome_regiao: str) -> pd.DataFrame:
+    """
+    Retorna o ano e a variação YoY (%) de maior valorização de mercado
+    para uma região específica pelo nome.
+
+    Colunas: ano | nome_regiao | valor_medio | variacao_yoy_pct
+    """
+    df = evolucao_mercado_por_nome_regiao(nome_regiao)
+    if df.empty:
+        return df
+    df_valid = df.dropna(subset=["variacao_yoy_pct"])
+    if df_valid.empty:
+        return df
+    idx_max = df_valid["variacao_yoy_pct"].idxmax()
+    return df_valid.loc[[idx_max]]

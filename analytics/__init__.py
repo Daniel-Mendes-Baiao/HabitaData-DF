@@ -33,6 +33,8 @@ from analytics.imoveis import (
 from analytics.mercado import (
     crescimento_anual_mercado,
     evolucao_mercado,
+    evolucao_mercado_por_nome_regiao,
+    maior_valorizacao_yoy_por_regiao,
     preco_medio_por_regiao,
     ranking_regioes,
     valorizacao_media_por_regiao,
@@ -69,6 +71,8 @@ __all__ = [
     "preco_medio_por_regiao",
     "evolucao_mercado",
     "crescimento_anual_mercado",
+    "evolucao_mercado_por_nome_regiao",
+    "maior_valorizacao_yoy_por_regiao",
     # urbano
     "impacto_metragem",
     "impacto_distancia_metro",

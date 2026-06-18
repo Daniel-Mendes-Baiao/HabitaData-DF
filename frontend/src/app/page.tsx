@@ -1,19 +1,38 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useAnalytics } from '@/context/AnalyticsContext';
 import { usePageContext } from '@/hooks/usePageContext';
-import { 
-  TrendingUp, 
-  Map as MapIcon, 
-  Search, 
-  Zap, 
-  Shield, 
+import { analysisAPI } from '@/services/api';
+import {
+  TrendingUp,
+  Map as MapIcon,
+  Search,
+  Zap,
+  Shield,
   ChevronRight,
   BarChart3,
   Globe,
-  Database
+  Database,
+  Loader2,
 } from 'lucide-react';
 import Link from 'next/link';
+
+// ---------------------------------------------------------------------------
+// Tipos locais
+// ---------------------------------------------------------------------------
+
+interface DashboardStats {
+  valorizacaoMedia: string;
+  precoMedioM2: string;
+  indiceSeguranca: string;
+  volumeDados: string;
+  loading: boolean;
+}
+
+// ---------------------------------------------------------------------------
+// Componente principal
+// ---------------------------------------------------------------------------
 
 export default function DashboardHome() {
   const { state } = useAnalytics();
@@ -24,11 +43,78 @@ export default function DashboardHome() {
     activeFilters: { anoSelecionado: state.anoSelecionado },
   });
 
-  const stats = [
-    { label: 'Valorização Média', value: '5.8%', icon: <TrendingUp className="text-emerald-400 w-5 h-5" />, trend: '+0.4%', trendType: 'positive' },
-    { label: 'Preço Médio m²', value: 'R$ 8.420', icon: <Zap className="text-amber-400 w-5 h-5" />, trend: '+2.1%', trendType: 'positive' },
-    { label: 'Índice de Segurança', value: '88/100', icon: <Shield className="text-sky-400 w-5 h-5" />, trend: 'Estável', trendType: 'neutral' },
-    { label: 'Volume de Dados', value: '45k+', icon: <Database className="text-purple-400 w-5 h-5" />, trend: 'Atualizado', trendType: 'neutral' },
+  // --- Stats reais da API (uma única chamada ao endpoint /api/analysis/summary) ---
+  const [stats, setStats] = useState<DashboardStats>({
+    valorizacaoMedia: '--',
+    precoMedioM2: '--',
+    indiceSeguranca: '--',
+    volumeDados: '--',
+    loading: true,
+  });
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const summary = await analysisAPI.getSummary();
+
+        setStats({
+          valorizacaoMedia: summary.cagr_medio_pct != null
+            ? `${summary.cagr_medio_pct.toFixed(1)}%`
+            : 'N/D',
+
+          precoMedioM2: summary.custo_m2_medio != null
+            ? `R$ ${summary.custo_m2_medio.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`
+            : 'N/D',
+
+          indiceSeguranca: summary.indice_seguranca != null
+            ? `${summary.indice_seguranca.toFixed(0)}/100`
+            : 'N/D',
+
+          volumeDados: summary.total_imoveis > 0
+            ? summary.total_imoveis >= 1000
+              ? `${(summary.total_imoveis / 1000).toFixed(0)}k+`
+              : `${summary.total_imoveis}`
+            : 'N/D',
+
+          loading: false,
+        });
+      } catch {
+        setStats(s => ({ ...s, loading: false }));
+      }
+    }
+    fetchStats();
+  }, []);
+
+
+  const statCards = [
+    {
+      label: 'Valorização Média',
+      value: stats.valorizacaoMedia,
+      icon: <TrendingUp className="text-emerald-400 w-5 h-5" />,
+      trend: 'CAGR médio DF',
+      trendType: 'positive',
+    },
+    {
+      label: 'Preço Médio m²',
+      value: stats.precoMedioM2,
+      icon: <Zap className="text-amber-400 w-5 h-5" />,
+      trend: '2025',
+      trendType: 'positive',
+    },
+    {
+      label: 'Índice de Segurança',
+      value: stats.indiceSeguranca,
+      icon: <Shield className="text-sky-400 w-5 h-5" />,
+      trend: 'Média DF',
+      trendType: 'neutral',
+    },
+    {
+      label: 'Volume de Dados',
+      value: stats.volumeDados,
+      icon: <Database className="text-purple-400 w-5 h-5" />,
+      trend: 'Imóveis',
+      trendType: 'neutral',
+    },
   ];
 
   return (
@@ -49,14 +135,14 @@ export default function DashboardHome() {
           Imobiliária DF
         </h1>
         <p className="text-base text-slate-400 max-w-2xl leading-relaxed font-medium">
-          Bem-vindo ao HabitaData. Utilize as ferramentas laterais para explorar o mercado, 
+          Bem-vindo ao HabitaData. Utilize as ferramentas laterais para explorar o mercado,
           analisar tendências temporais e simular cenários financeiros com dados reais.
         </p>
       </header>
 
       {/* Quick Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, i) => (
+        {statCards.map((stat, i) => (
           <div key={i} className="glassmorphism p-8 rounded-[2.5rem] glow-emerald-hover transition-all duration-500 hover:scale-[1.02] cursor-default relative overflow-hidden group">
             <div className="flex justify-between items-start mb-6">
               <div className="p-3.5 bg-slate-950/60 border border-slate-800/60 rounded-2xl group-hover:scale-110 group-hover:border-emerald-500/20 transition-all duration-300">
@@ -69,7 +155,12 @@ export default function DashboardHome() {
               }`}>{stat.trend}</span>
             </div>
             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 font-mono">{stat.label}</p>
-            <h3 className="text-3xl font-black text-white tracking-tight">{stat.value}</h3>
+            <h3 className="text-3xl font-black text-white tracking-tight flex items-center gap-2">
+              {stats.loading
+                ? <Loader2 size={20} className="animate-spin text-slate-600" />
+                : stat.value
+              }
+            </h3>
           </div>
         ))}
       </div>
@@ -78,7 +169,6 @@ export default function DashboardHome() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Link href="/analysis/regional" className="group">
           <div className="h-full bg-gradient-to-br from-emerald-950 via-slate-900 to-slate-900 border border-slate-800/80 p-12 rounded-[3.5rem] shadow-2xl relative overflow-hidden transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_0_50px_rgba(16,185,129,0.15)] hover:border-emerald-500/30">
-            {/* Hover card glow decoration */}
             <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none -z-10 opacity-0 group-hover:opacity-100 transition-all duration-500" />
             <div className="relative z-10 space-y-5">
               <div className="w-14 h-14 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-all duration-300">
@@ -98,7 +188,6 @@ export default function DashboardHome() {
 
         <Link href="/properties" className="group">
           <div className="h-full bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800/80 p-12 rounded-[3.5rem] shadow-2xl relative overflow-hidden transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_0_50px_rgba(59,130,246,0.12)] hover:border-blue-500/30">
-            {/* Hover card glow decoration */}
             <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none -z-10 opacity-0 group-hover:opacity-100 transition-all duration-500" />
             <div className="relative z-10 space-y-5">
               <div className="w-14 h-14 bg-blue-500/10 rounded-2xl border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-all duration-300">
@@ -116,16 +205,17 @@ export default function DashboardHome() {
         </Link>
       </div>
 
-      {/* Footer Info */}
+      {/* Footer */}
       <footer className="pt-12 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center gap-6">
-        <p className="text-slate-500 text-xs font-bold uppercase tracking-widest font-mono">
-          © 2026 HabitaData DF • Engine de Inteligência v2.4
-        </p>
-        <div className="flex gap-8 text-[10px] font-black text-slate-600 uppercase tracking-widest">
-          <span className="hover:text-emerald-400 cursor-pointer transition-colors">Termos de Uso</span>
-          <span className="hover:text-emerald-400 cursor-pointer transition-colors">Documentação API</span>
-          <span className="hover:text-emerald-400 cursor-pointer transition-colors">Suporte Técnico</span>
+        <div className="flex items-center gap-3">
+          <MapIcon className="text-emerald-400 w-5 h-5" />
+          <span className="text-slate-500 text-xs font-mono">
+            HabitaData DF · Projeto Integrador CEUB · 2025
+          </span>
         </div>
+        <span className="text-[10px] text-slate-700 font-mono uppercase tracking-widest">
+          Dados reais · Brasília · DF
+        </span>
       </footer>
     </div>
   );
